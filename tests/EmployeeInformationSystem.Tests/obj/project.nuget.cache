@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tRryVWlMvug=",
+  "dgSpecHash": "nFfzm6PUVak=",
   "success": true,
-  "projectFilePath": "D:\\Joshua\\Project\\employee-information-system\\test\\EmployeeInformationSystem.Tests\\EmployeeInformationSystem.Tests.csproj",
+  "projectFilePath": "D:\\Joshua\\Project\\employee-information-system\\tests\\EmployeeInformationSystem.Tests\\EmployeeInformationSystem.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joshua\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\joshua\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
