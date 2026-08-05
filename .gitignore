@@ -4,3 +4,16 @@
 
 /EmployeeInformationSystem/.vs
 /.vs
+/src/EmployeeInformationSystem.API/obj/Debug/net8.0
+/src/EmployeeInformationSystem.API/bin/Debug/net8.0
+/src/EmployeeInformationSystem.API/obj
+/src/EmployeeInformationSystem.Application/bin/Debug/net8.0
+/src/EmployeeInformationSystem.Application/obj
+/src/EmployeeInformationSystem.Domain/bin/Debug/net8.0
+/src/EmployeeInformationSystem.Domain/obj
+/src/EmployeeInformationSystem.Infrastructure/bin/Debug/net8.0
+/src/EmployeeInformationSystem.Infrastructure/obj
+/src/EmployeeInformationSystem.Persistence/bin/Debug/net8.0
+/src/EmployeeInformationSystem.Persistence/obj
+/tests/EmployeeInformationSystem.Tests/bin/Debug/net8.0
+/tests/EmployeeInformationSystem.Tests/obj
