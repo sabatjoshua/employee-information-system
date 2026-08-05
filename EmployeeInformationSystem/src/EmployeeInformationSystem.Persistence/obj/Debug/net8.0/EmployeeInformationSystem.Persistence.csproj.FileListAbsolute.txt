@@ -1,0 +1,12 @@
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\bin\Debug\net8.0\EmployeeInformationSystem.Persistence.deps.json
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\bin\Debug\net8.0\EmployeeInformationSystem.Persistence.dll
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\bin\Debug\net8.0\EmployeeInformationSystem.Persistence.pdb
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\EmployeeInformationSystem.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\EmployeeInformationSystem.Persistence.AssemblyInfoInputs.cache
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\EmployeeInformationSystem.Persistence.AssemblyInfo.cs
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\EmployeeInformationSystem.Persistence.csproj.CoreCompileInputs.cache
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\EmployeeInformationSystem.Persistence.sourcelink.json
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\EmployeeInformationSystem.Persistence.dll
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\refint\EmployeeInformationSystem.Persistence.dll
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\EmployeeInformationSystem.Persistence.pdb
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Persistence\obj\Debug\net8.0\ref\EmployeeInformationSystem.Persistence.dll

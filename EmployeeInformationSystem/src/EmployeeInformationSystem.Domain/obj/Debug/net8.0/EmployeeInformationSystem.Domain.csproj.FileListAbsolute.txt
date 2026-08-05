@@ -1,0 +1,12 @@
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\bin\Debug\net8.0\EmployeeInformationSystem.Domain.deps.json
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\bin\Debug\net8.0\EmployeeInformationSystem.Domain.dll
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\bin\Debug\net8.0\EmployeeInformationSystem.Domain.pdb
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\EmployeeInformationSystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\EmployeeInformationSystem.Domain.AssemblyInfoInputs.cache
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\EmployeeInformationSystem.Domain.AssemblyInfo.cs
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\EmployeeInformationSystem.Domain.csproj.CoreCompileInputs.cache
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\EmployeeInformationSystem.Domain.sourcelink.json
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\EmployeeInformationSystem.Domain.dll
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\refint\EmployeeInformationSystem.Domain.dll
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\EmployeeInformationSystem.Domain.pdb
+D:\Joshua\Project\employee-information-system\EmployeeInformationSystem\src\EmployeeInformationSystem.Domain\obj\Debug\net8.0\ref\EmployeeInformationSystem.Domain.dll
