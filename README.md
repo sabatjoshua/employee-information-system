@@ -7,6 +7,7 @@ This project is being developed as a personal portfolio project following enterp
 The primary goal is not only to build a working application but also to demonstrate software architecture, clean code, maintainability, and best practices.
 
 > 🚧 **Status:** Under Active Development
+
 Current Version: **v0.1.0**
 
 ---
