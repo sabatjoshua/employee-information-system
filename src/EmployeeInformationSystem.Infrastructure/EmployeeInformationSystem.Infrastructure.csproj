@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EmployeeInformationSystem.Application\EmployeeInformationSystem.Application.csproj" />
+    <ProjectReference Include="..\EmployeeInformationSystem.Domain\EmployeeInformationSystem.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+    <Folder Include="FileStorage\" />
+    <Folder Include="Logging\" />
+    <Folder Include="DependencyInjection\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EmployeeInformationSystem.Domain\EmployeeInformationSystem.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="DependencyInjection\" />
+    <Folder Include="Features\" />
+  </ItemGroup>
+
 </Project>
