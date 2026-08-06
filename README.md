@@ -25,9 +25,9 @@ Completed:
 
 ## Backend
 
-- ASP.NET Core 9
+- ASP.NET Core 8
 - C#
-- Entity Framework Core
+- Entity Framework Core 8
 - SQL Server
 
 ## Architecture
