@@ -169,6 +169,9 @@ Additional documentation is available in:
 
 # Author
 Joshua Sabat
+
 Senior Software Engineer
+
 Singapore
+
 Open to international opportunities.
