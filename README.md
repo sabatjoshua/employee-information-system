@@ -1,9 +1,7 @@
 # Employee Information System
 
 A production-style Employee Information System built using **ASP.NET Core**, **Clean Architecture**, **Entity Framework Core**, and **SQL Server**.
-
 This project is being developed as a personal portfolio project following enterprise software development practices used in modern software companies.
-
 The primary goal is not only to build a working application but also to demonstrate software architecture, clean code, maintainability, and best practices.
 
 > 🚧 **Status:** Under Active Development
