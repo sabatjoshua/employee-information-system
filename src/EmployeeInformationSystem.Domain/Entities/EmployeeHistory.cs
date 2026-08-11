@@ -10,7 +10,7 @@ namespace EmployeeInformationSystem.Domain.Entities
         public required string FirstName { get; set; }
         public string? MiddleName { get; set; }
         public required string LastName { get; set; }
-        public string? GenderCode { get; set; }
+        public required string GenderCode { get; set; }
         public required DateTimeOffset BirthDate { get; set; }
         public string? Email { get; set; }
         public string? MobileNo { get; set; }
