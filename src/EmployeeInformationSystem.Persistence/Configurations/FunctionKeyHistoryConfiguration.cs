@@ -1,0 +1,57 @@
+﻿using EmployeeInformationSystem.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace EmployeeInformationSystem.Persistence.Configurations;
+
+public class FunctionKeyHistoryConfiguration : IEntityTypeConfiguration<FunctionKeyHistory>
+{
+    public void Configure(EntityTypeBuilder<FunctionKeyHistory> builder)
+    {
+        builder.ToTable("FunctionKeyHistory");
+
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Id)
+            .HasColumnName("HistoryId")
+            .ValueGeneratedOnAdd();
+
+        builder.Property(x => x.FunctionKeyId)
+            .IsRequired();
+
+        builder.Property(x => x.FunctionCode)
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(x => x.DisplayName)
+            .HasMaxLength(200)
+            .IsRequired();
+
+        builder.Property(x => x.Remarks)
+            .HasMaxLength(500);
+
+        builder.Property(x => x.StatusCode)
+            .HasMaxLength(20)
+            .IsRequired();
+
+        builder.Property(x => x.ActionTypeCode)
+            .HasMaxLength(20)
+            .IsRequired();
+
+        builder.Property(x => x.ActionBy)
+            .IsRequired();
+
+        builder.Property(x => x.ActionAt)
+            .HasColumnType("datetimeoffset(7)")
+            .IsRequired();
+
+        builder.Property(x => x.CreatedBy)
+            .IsRequired();
+
+        builder.Property(x => x.CreatedAt)
+            .HasColumnType("datetimeoffset(7)")
+            .IsRequired();
+
+        builder.HasIndex(x => x.FunctionKeyId);
+    }
+}
