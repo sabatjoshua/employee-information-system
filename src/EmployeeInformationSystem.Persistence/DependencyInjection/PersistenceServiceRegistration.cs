@@ -1,4 +1,6 @@
-﻿using EmployeeInformationSystem.Persistence.Contexts;
+﻿using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Persistence.Contexts;
+using EmployeeInformationSystem.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,8 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             return services;
         }

@@ -1,5 +1,6 @@
 using EmployeeInformationSystem.Persistence.Contexts;
 using EmployeeInformationSystem.Persistence.DependencyInjection;
+using EmployeeInformationSystem.Application.DependencyInjection;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>();
+
+builder.Services.AddApplication();
 
 // Add services to the container.
 
