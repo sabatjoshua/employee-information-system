@@ -1,8 +1,14 @@
+using EmployeeInformationSystem.Persistence.Contexts;
 using EmployeeInformationSystem.Persistence.DependencyInjection;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// added by joshua 2026-08-11
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>();
 
 // Add services to the container.
 
@@ -25,5 +31,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// added by joshua 2026-08-11
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
