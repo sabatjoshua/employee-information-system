@@ -1,4 +1,5 @@
-﻿using EmployeeInformationSystem.Application.Features.Employees;
+﻿using EmployeeInformationSystem.Application.Features.Departments;
+using EmployeeInformationSystem.Application.Features.Employees;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace EmployeeInformationSystem.Application.DependencyInjection
             this IServiceCollection services)
         {
             services.AddScoped<GetEmployeeByIdHandler>();
+            services.AddScoped<CreateDepartmentHandler>();
 
             return services;
         }

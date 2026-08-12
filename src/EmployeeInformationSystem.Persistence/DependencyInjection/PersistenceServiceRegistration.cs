@@ -1,4 +1,5 @@
-﻿using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+﻿using EmployeeInformationSystem.Application.Common.Interfaces;
+using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Persistence.Contexts;
 using EmployeeInformationSystem.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,9 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
                     configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IUnitOfWork>(
+                provider => provider.GetRequiredService<ApplicationDbContext>());
             return services;
         }
     }

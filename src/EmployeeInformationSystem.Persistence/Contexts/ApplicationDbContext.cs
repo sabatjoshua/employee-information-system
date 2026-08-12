@@ -1,4 +1,5 @@
-﻿using EmployeeInformationSystem.Domain.Entities;
+﻿using EmployeeInformationSystem.Application.Common.Interfaces;
+using EmployeeInformationSystem.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeInformationSystem.Persistence.Contexts
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IUnitOfWork
     {
         public ApplicationDbContext(
             DbContextOptions<ApplicationDbContext> options)
