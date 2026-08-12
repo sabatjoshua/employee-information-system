@@ -15,9 +15,12 @@ namespace EmployeeInformationSystem.Application.DependencyInjection
         public static IServiceCollection AddApplication(
             this IServiceCollection services)
         {
-            services.AddScoped<GetEmployeeByIdHandler>();
             services.AddScoped<CreateDepartmentHandler>();
+            services.AddScoped<GetDepartmentByIdHandler>(); 
+            services.AddScoped<UpdateDepartmentHandler>();
+            services.AddScoped<DeleteDepartmentHandler>();
             services.AddScoped<CreatePositionHandler>();
+            services.AddScoped<GetEmployeeByIdHandler>();
 
             return services;
         }

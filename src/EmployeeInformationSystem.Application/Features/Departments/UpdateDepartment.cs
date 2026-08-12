@@ -1,0 +1,85 @@
+﻿using EmployeeInformationSystem.Application.Common.Interfaces;
+using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Domain.Constants;
+using EmployeeInformationSystem.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EmployeeInformationSystem.Application.Features.Departments
+{
+    public sealed record UpdateDepartmentCommand(
+        Guid DepartmentId,
+        string Name,
+        Guid UpdatedBy);
+
+    public sealed record UpdateDepartmentResponse(
+        Guid Id,
+        string Name,
+        string StatusCode);
+
+    public sealed class UpdateDepartmentHandler
+    {
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IDepartmentHistoryRepository _departmentHistoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UpdateDepartmentHandler(
+            IDepartmentRepository departmentRepository,
+            IDepartmentHistoryRepository departmentHistoryRepository,
+            IUnitOfWork unitOfWork)
+        {
+            _departmentRepository = departmentRepository;
+            _departmentHistoryRepository = departmentHistoryRepository;
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<UpdateDepartmentResponse?> HandleAsync(
+            UpdateDepartmentCommand command,
+            CancellationToken cancellationToken = default)
+        {
+            var department = await _departmentRepository.GetByIdAsync(
+                command.DepartmentId,
+                cancellationToken);
+
+            if (department is null)
+            {
+                return null;
+            }
+
+            department.Name = command.Name;
+            department.SetUpdated(command.UpdatedBy, DateTimeOffset.UtcNow);
+
+            var history = new DepartmentHistory
+            {
+                DepartmentId = department.Id,
+                Name = department.Name,
+                CreatedBy = department.CreatedBy,
+                CreatedAt = department.CreatedAt,
+                StatusCode = department.StatusCode,
+                ActionTypeCode = ActionTypeCodes.Update,
+                ActionBy = command.UpdatedBy,
+                ActionAt = DateTimeOffset.UtcNow
+            };
+
+            if (department.UpdatedBy.HasValue && department.UpdatedAt.HasValue)
+            {
+                history.SetUpdated(department.UpdatedBy.Value, department.UpdatedAt.Value);
+            }
+
+            await _departmentHistoryRepository.AddAsync(
+                history,
+                cancellationToken);
+
+            await _unitOfWork.SaveChangesAsync(
+                cancellationToken);
+
+            return new UpdateDepartmentResponse(
+                department.Id,
+                department.Name,
+                department.StatusCode);
+        }
+    }
+}

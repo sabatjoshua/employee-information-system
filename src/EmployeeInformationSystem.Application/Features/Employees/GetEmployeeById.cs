@@ -1,4 +1,5 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Features.Departments;
 using EmployeeInformationSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,11 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 employee.HireDate,
                 employee.DepartmentId,
                 employee.PositionId);
+        }
+
+        public static implicit operator GetEmployeeByIdHandler(GetDepartmentByIdHandler v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

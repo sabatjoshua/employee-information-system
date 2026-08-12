@@ -11,6 +11,11 @@ namespace EmployeeInformationSystem.Domain.Common
         public Guid? UpdatedBy { get; protected set; }
 
         public DateTimeOffset? UpdatedAt { get; protected set; }
+        public void SetUpdated(Guid updatedBy, DateTimeOffset updatedAt)
+        {
+            UpdatedBy = updatedBy;
+            UpdatedAt = updatedAt;
+        }
 
     }
 }

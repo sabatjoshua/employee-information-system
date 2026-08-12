@@ -44,7 +44,9 @@ namespace EmployeeInformationSystem.Persistence.Repositories
             Employee employee,
             CancellationToken cancellationToken = default)
         {
-            await _context.Employees.AddAsync(employee, cancellationToken);
+            await _context.Employees.AddAsync(
+                employee, 
+                cancellationToken);
         }
 
         public void Update(Employee employee)
