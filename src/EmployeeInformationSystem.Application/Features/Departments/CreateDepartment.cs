@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace EmployeeInformationSystem.Application.Features.Departments
 {
-
     public sealed record CreateDepartmentCommand(string Name, Guid CreatedBy);
 
     public sealed record CreateDepartmentResponse(
@@ -21,13 +20,16 @@ namespace EmployeeInformationSystem.Application.Features.Departments
     {
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IDepartmentHistoryRepository _departmentHistoryRepository;
 
         public CreateDepartmentHandler(
             IDepartmentRepository departmentRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IDepartmentHistoryRepository departmentHistoryRepository)
         {
             _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
+            _departmentHistoryRepository = departmentHistoryRepository;
         }
 
         public async Task<CreateDepartmentResponse> HandleAsync(
@@ -42,8 +44,24 @@ namespace EmployeeInformationSystem.Application.Features.Departments
                 StatusCode = StatusCodes.Active
             };
 
+            var history = new DepartmentHistory
+            {
+                DepartmentId = department.Id,
+                Name = department.Name,
+                CreatedBy = department.CreatedBy,
+                CreatedAt = department.CreatedAt,
+                StatusCode = department.StatusCode,
+                ActionTypeCode = ActionTypeCodes.Insert,
+                ActionBy = command.CreatedBy,
+                ActionAt = DateTimeOffset.UtcNow
+            };
+
             await _departmentRepository.AddAsync(
                 department,
+                cancellationToken);
+
+            await _departmentHistoryRepository.AddAsync(
+                history,
                 cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(
