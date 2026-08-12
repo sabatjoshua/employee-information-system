@@ -113,6 +113,7 @@ namespace EmployeeInformationSystem.API.Controllers
         Guid CreatedBy);
     public sealed record UpdateDepartmentRequest(
     string Name,
-    Guid UpdatedBy); public sealed record DeleteDepartmentRequest(
+    Guid UpdatedBy); 
+    public sealed record DeleteDepartmentRequest(
     Guid DeletedBy);
 }

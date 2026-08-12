@@ -20,6 +20,9 @@ namespace EmployeeInformationSystem.Application.DependencyInjection
             services.AddScoped<UpdateDepartmentHandler>();
             services.AddScoped<DeleteDepartmentHandler>();
             services.AddScoped<CreatePositionHandler>();
+            services.AddScoped<UpdatePositionHandler>();
+            services.AddScoped<DeletePositionHandler>();
+            services.AddScoped<GetPositionByIdHandler>();
             services.AddScoped<GetEmployeeByIdHandler>();
 
             return services;
