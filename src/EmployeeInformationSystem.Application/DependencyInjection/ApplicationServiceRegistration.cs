@@ -1,12 +1,4 @@
-﻿using EmployeeInformationSystem.Application.Features.Departments;
-using EmployeeInformationSystem.Application.Features.Employees;
-using EmployeeInformationSystem.Application.Features.Positions;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace EmployeeInformationSystem.Application.DependencyInjection
 {
@@ -15,15 +7,6 @@ namespace EmployeeInformationSystem.Application.DependencyInjection
         public static IServiceCollection AddApplication(
             this IServiceCollection services)
         {
-            services.AddScoped<CreatePositionHandler>();
-            services.AddScoped<UpdatePositionHandler>();
-            services.AddScoped<DeletePositionHandler>();
-            services.AddScoped<GetPositionByIdHandler>();
-            services.AddScoped<CreateEmployeeHandler>();
-            services.AddScoped<GetEmployeeByIdHandler>();
-            services.AddScoped<UpdateEmployeeHandler>();
-            services.AddScoped<DeleteEmployeeHandler>();
-
             services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(
                 typeof(ApplicationServiceRegistration).Assembly));

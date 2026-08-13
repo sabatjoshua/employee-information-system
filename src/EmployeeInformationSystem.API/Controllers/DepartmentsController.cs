@@ -1,8 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Features.Departments;
-using EmployeeInformationSystem.Application.Features.Employees;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata;
 
 namespace EmployeeInformationSystem.API.Controllers
 {

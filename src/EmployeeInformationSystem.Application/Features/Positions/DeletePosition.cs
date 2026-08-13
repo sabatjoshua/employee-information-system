@@ -2,23 +2,21 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Positions
 {
     public sealed record DeletePositionCommand(
         Guid PositionId,
-        Guid DeletedBy);
+        Guid DeletedBy)
+        : IRequest<DeletePositionResponse?>;
 
     public sealed record DeletePositionResponse(
         Guid Id,
         string StatusCode);
 
     public sealed class DeletePositionHandler
+        : IRequestHandler<DeletePositionCommand, DeletePositionResponse?>
     {
         private readonly IPositionRepository _positionRepository;
         private readonly IPositionHistoryRepository _positionHistoryRepository;
@@ -34,7 +32,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<DeletePositionResponse?> HandleAsync(
+        public async Task<DeletePositionResponse?> Handle(
             DeletePositionCommand command,
             CancellationToken cancellationToken = default)
         {

@@ -2,11 +2,7 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Positions
 {
@@ -14,7 +10,8 @@ namespace EmployeeInformationSystem.Application.Features.Positions
         Guid PositionId,
         string Name,
         Guid DepartmentId,
-        Guid UpdatedBy);
+        Guid UpdatedBy)
+        : IRequest<UpdatePositionResponse?>;
 
     public sealed record UpdatePositionResponse(
         Guid Id,
@@ -23,6 +20,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
         string StatusCode);
 
     public sealed class UpdatePositionHandler
+        : IRequestHandler<UpdatePositionCommand, UpdatePositionResponse?>
     {
         private readonly IPositionRepository _positionRepository;
         private readonly IPositionHistoryRepository _positionHistoryRepository;
@@ -38,7 +36,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<UpdatePositionResponse?> HandleAsync(
+        public async Task<UpdatePositionResponse?> Handle(
             UpdatePositionCommand command,
             CancellationToken cancellationToken = default)
         {

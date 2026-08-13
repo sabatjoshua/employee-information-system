@@ -2,21 +2,19 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Positions
 {
-    public sealed record CreatePositionCommand(string Name, Guid DepartmentId, Guid CreatedBy);
+    public sealed record CreatePositionCommand(string Name, Guid DepartmentId, Guid CreatedBy)
+        : IRequest<CreatePositionResponse>;
 
     public sealed record CreatePositionResponse(
         Guid Id,
         string Name);
 
     public sealed class CreatePositionHandler
+        : IRequestHandler<CreatePositionCommand, CreatePositionResponse>
     {
         private readonly IPositionRepository _positionRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -32,7 +30,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
             _positionHistoryRepository = positionHistoryRepository;
         }
 
-        public async Task<CreatePositionResponse> HandleAsync(
+        public async Task<CreatePositionResponse> Handle(
             CreatePositionCommand command,
             CancellationToken cancellationToken = default)
         {

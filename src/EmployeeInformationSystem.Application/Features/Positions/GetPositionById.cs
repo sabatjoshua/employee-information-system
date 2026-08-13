@@ -1,13 +1,10 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Positions
 {
-    public sealed record GetPositionByIdQuery(Guid PositionId);
+    public sealed record GetPositionByIdQuery(Guid PositionId)
+        : IRequest<GetPositionByIdResponse?>;
 
     public sealed record GetPositionByIdResponse(
         Guid Id,
@@ -16,6 +13,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
         string StatusCode);
 
     public sealed class GetPositionByIdHandler
+        : IRequestHandler<GetPositionByIdQuery, GetPositionByIdResponse?>
     {
         private readonly IPositionRepository _positionRepository;
 
@@ -25,7 +23,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
             _positionRepository = positionRepository;
         }
 
-        public async Task<GetPositionByIdResponse?> HandleAsync(
+        public async Task<GetPositionByIdResponse?> Handle(
             GetPositionByIdQuery query,
             CancellationToken cancellationToken = default)
         {

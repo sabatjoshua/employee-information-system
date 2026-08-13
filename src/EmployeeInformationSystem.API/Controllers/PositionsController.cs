@@ -1,4 +1,5 @@
 ﻿using EmployeeInformationSystem.Application.Features.Positions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
@@ -7,21 +8,11 @@ namespace EmployeeInformationSystem.API.Controllers
     [Route("api/[controller]")]
     public class PositionsController : ControllerBase
     {
-        private readonly CreatePositionHandler _createPositionHandler;
-        private readonly GetPositionByIdHandler _getPositionByIdHandler;
-        private readonly UpdatePositionHandler _updatePositionHandler;
-        private readonly DeletePositionHandler _deletePositionHandler;
+        private readonly IMediator _mediator;
 
-        public PositionsController(
-            CreatePositionHandler createPositionHandler,
-            GetPositionByIdHandler getPositionByIdHandler,
-            UpdatePositionHandler updatePositionHandler,
-            DeletePositionHandler deletePositionHandler)
+        public PositionsController(IMediator mediator)
         {
-            _createPositionHandler = createPositionHandler;
-            _getPositionByIdHandler = getPositionByIdHandler;
-            _updatePositionHandler = updatePositionHandler;
-            _deletePositionHandler = deletePositionHandler;
+            _mediator = mediator;
         }
 
 
@@ -35,7 +26,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.DepartmentId,
                 request.CreatedBy);
 
-            var result = await _createPositionHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -57,7 +48,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.DepartmentId,
                 request.UpdatedBy);
 
-            var result = await _updatePositionHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -79,7 +70,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 id,
                 request.DeletedBy);
 
-            var result = await _deletePositionHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -98,7 +89,7 @@ namespace EmployeeInformationSystem.API.Controllers
         {
             var query = new GetPositionByIdQuery(id);
 
-            var result = await _getPositionByIdHandler.HandleAsync(
+            var result = await _mediator.Send(
                 query,
                 cancellationToken);
 
