@@ -2,23 +2,21 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Employees
 {
     public sealed record DeleteEmployeeCommand(
         Guid EmployeeId,
-        Guid DeletedBy);
+        Guid DeletedBy)
+    : IRequest<DeleteEmployeeResponse?>;
 
     public sealed record DeleteEmployeeResponse(
         Guid EmployeeId,
         string StatusCode);
 
     public sealed class DeleteEmployeeHandler
+    : IRequestHandler<DeleteEmployeeCommand, DeleteEmployeeResponse?>
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
@@ -34,7 +32,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<DeleteEmployeeResponse?> HandleAsync(
+        public async Task<DeleteEmployeeResponse?> Handle(
             DeleteEmployeeCommand command,
             CancellationToken cancellationToken = default)
         {

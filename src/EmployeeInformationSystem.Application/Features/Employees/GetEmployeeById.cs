@@ -1,15 +1,10 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
-using EmployeeInformationSystem.Application.Features.Departments;
-using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Employees
 {
-    public sealed record GetEmployeeByIdQuery(Guid EmployeeId);
+    public sealed record GetEmployeeByIdQuery(Guid EmployeeId)
+    : IRequest<GetEmployeeByIdResponse?>;
 
     public sealed record GetEmployeeByIdResponse(
         Guid EmployeeId,
@@ -26,6 +21,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         Guid PositionId);
 
     public sealed class GetEmployeeByIdHandler
+    : IRequestHandler<GetEmployeeByIdQuery, GetEmployeeByIdResponse?>
     {
         private readonly IEmployeeRepository _employeeRepository;
 
@@ -34,7 +30,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<GetEmployeeByIdResponse?> HandleAsync(
+        public async Task<GetEmployeeByIdResponse?> Handle(
             GetEmployeeByIdQuery query,
             CancellationToken cancellationToken = default)
         {

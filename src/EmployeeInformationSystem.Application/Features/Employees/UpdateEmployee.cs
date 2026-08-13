@@ -2,11 +2,7 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Employees
 {
@@ -23,7 +19,8 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         DateTimeOffset HireDate,
         Guid DepartmentId,
         Guid PositionId,
-        Guid UpdatedBy);
+        Guid UpdatedBy)
+    : IRequest<UpdateEmployeeResponse?>;
 
     public sealed record UpdateEmployeeResponse(
         Guid EmployeeId,
@@ -34,6 +31,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         string StatusCode);
 
     public sealed class UpdateEmployeeHandler
+    : IRequestHandler<UpdateEmployeeCommand, UpdateEmployeeResponse?>
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
@@ -49,7 +47,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<UpdateEmployeeResponse?> HandleAsync(
+        public async Task<UpdateEmployeeResponse?> Handle(
             UpdateEmployeeCommand command,
             CancellationToken cancellationToken = default)
         {

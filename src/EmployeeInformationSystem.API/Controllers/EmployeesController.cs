@@ -1,4 +1,5 @@
 ﻿using EmployeeInformationSystem.Application.Features.Employees;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
@@ -7,21 +8,11 @@ namespace EmployeeInformationSystem.API.Controllers
     [Route("api/[controller]")]
     public class EmployeesController : ControllerBase
     {
-        private readonly CreateEmployeeHandler _createEmployeeHandler;
-        private readonly GetEmployeeByIdHandler _getEmployeeByIdHandler;
-        private readonly UpdateEmployeeHandler _updateEmployeeHandler;
-        private readonly DeleteEmployeeHandler _deleteEmployeeHandler;
+        private readonly IMediator _mediator;
 
-        public EmployeesController(
-            CreateEmployeeHandler createEmployeeHandler,
-            GetEmployeeByIdHandler getEmployeeByIdHandler,
-            UpdateEmployeeHandler updateEmployeeHandler,
-            DeleteEmployeeHandler deleteEmployeeHandler)
+        public EmployeesController(IMediator mediator)
         {
-            _createEmployeeHandler = createEmployeeHandler;
-            _getEmployeeByIdHandler = getEmployeeByIdHandler;
-            _updateEmployeeHandler = updateEmployeeHandler;
-            _deleteEmployeeHandler = deleteEmployeeHandler;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -43,7 +34,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.PositionId,
                 request.CreatedBy);
 
-            var result = await _createEmployeeHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -74,7 +65,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.PositionId,
                 request.UpdatedBy);
 
-            var result = await _updateEmployeeHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -96,7 +87,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 id,
                 request.DeletedBy);
 
-            var result = await _deleteEmployeeHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -115,7 +106,7 @@ namespace EmployeeInformationSystem.API.Controllers
         {
             var query = new GetEmployeeByIdQuery(id);
 
-            var result = await _getEmployeeByIdHandler.HandleAsync(
+            var result = await _mediator.Send(
                 query,
                 cancellationToken);
 

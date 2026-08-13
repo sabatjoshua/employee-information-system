@@ -2,11 +2,7 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Employees
 {
@@ -22,7 +18,8 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         DateTimeOffset HireDate,
         Guid DepartmentId,
         Guid PositionId,
-        Guid CreatedBy);
+        Guid CreatedBy)
+    : IRequest<CreateEmployeeResponse>;
 
     public sealed record CreateEmployeeResponse(
         Guid Id,
@@ -31,6 +28,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         string LastName);
 
     public sealed class CreateEmployeeHandler
+    : IRequestHandler<CreateEmployeeCommand, CreateEmployeeResponse>
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -46,7 +44,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             _employeeHistoryRepository = employeeHistoryRepository;
         }
 
-        public async Task<CreateEmployeeResponse> HandleAsync(
+        public async Task<CreateEmployeeResponse> Handle(
             CreateEmployeeCommand command,
             CancellationToken cancellationToken = default)
         {
