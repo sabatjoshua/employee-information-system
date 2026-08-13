@@ -48,15 +48,5 @@ namespace EmployeeInformationSystem.Persistence.Repositories
                 employee, 
                 cancellationToken);
         }
-
-        public void Update(Employee employee)
-        {
-            _context.Employees.Update(employee);
-        }
-
-        public void Remove(Employee employee)
-        {
-            _context.Employees.Remove(employee);
-        }
     }
 }

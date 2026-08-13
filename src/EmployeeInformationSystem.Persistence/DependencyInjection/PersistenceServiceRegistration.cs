@@ -24,6 +24,7 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
                     configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IEmployeeHistoryRepository, EmployeeHistoryRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IDepartmentHistoryRepository,DepartmentHistoryRepository>();
             services.AddScoped<IPositionRepository, PositionRepository>();

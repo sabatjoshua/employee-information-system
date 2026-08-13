@@ -61,10 +61,5 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 employee.DepartmentId,
                 employee.PositionId);
         }
-
-        public static implicit operator GetEmployeeByIdHandler(GetDepartmentByIdHandler v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

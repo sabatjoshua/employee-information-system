@@ -7,18 +7,10 @@ using System.Threading.Tasks;
 
 namespace EmployeeInformationSystem.Application.Common.Interfaces.Repositories
 {
-    public interface IEmployeeRepository
+    public interface IEmployeeHistoryRepository
     {
-        Task<Employee?> GetByIdAsync(
-            Guid employeeId,
-            CancellationToken cancellationToken = default);
-
-        Task<Employee?> GetByEmployeeNoAsync(
-            string employeeNo,
-            CancellationToken cancellationToken = default);
-
         Task AddAsync(
-            Employee employee,
+            EmployeeHistory history,
             CancellationToken cancellationToken = default);
     }
 }
