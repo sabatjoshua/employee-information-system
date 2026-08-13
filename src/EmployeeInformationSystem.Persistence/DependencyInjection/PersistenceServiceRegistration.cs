@@ -1,15 +1,12 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Persistence.Contexts;
 using EmployeeInformationSystem.Persistence.Repositories;
+using EmployeeInformationSystem.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeInformationSystem.Persistence.DependencyInjection
 {
@@ -25,10 +22,13 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeHistoryRepository, EmployeeHistoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserHistoryRepository, UserHistoryRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IDepartmentHistoryRepository,DepartmentHistoryRepository>();
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IPositionHistoryRepository, PositionHistoryRepository>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUnitOfWork>(
                 provider => provider.GetRequiredService<ApplicationDbContext>());
 
