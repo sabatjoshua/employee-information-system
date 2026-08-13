@@ -15,10 +15,6 @@ namespace EmployeeInformationSystem.Application.DependencyInjection
         public static IServiceCollection AddApplication(
             this IServiceCollection services)
         {
-            services.AddScoped<CreateDepartmentHandler>();
-            services.AddScoped<GetDepartmentByIdHandler>(); 
-            services.AddScoped<UpdateDepartmentHandler>();
-            services.AddScoped<DeleteDepartmentHandler>();
             services.AddScoped<CreatePositionHandler>();
             services.AddScoped<UpdatePositionHandler>();
             services.AddScoped<DeletePositionHandler>();
@@ -27,6 +23,10 @@ namespace EmployeeInformationSystem.Application.DependencyInjection
             services.AddScoped<GetEmployeeByIdHandler>();
             services.AddScoped<UpdateEmployeeHandler>();
             services.AddScoped<DeleteEmployeeHandler>();
+
+            services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(
+                typeof(ApplicationServiceRegistration).Assembly));
 
             return services;
         }

@@ -2,21 +2,19 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Departments
 {
-    public sealed record CreateDepartmentCommand(string Name, Guid CreatedBy);
+    public sealed record CreateDepartmentCommand(string Name, Guid CreatedBy)
+        : IRequest<CreateDepartmentResponse>;
 
     public sealed record CreateDepartmentResponse(
         Guid Id,
         string Name);
 
     public sealed class CreateDepartmentHandler
+        : IRequestHandler<CreateDepartmentCommand, CreateDepartmentResponse>
     {
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -32,9 +30,9 @@ namespace EmployeeInformationSystem.Application.Features.Departments
             _departmentHistoryRepository = departmentHistoryRepository;
         }
 
-        public async Task<CreateDepartmentResponse> HandleAsync(
+        public async Task<CreateDepartmentResponse> Handle(
             CreateDepartmentCommand command,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var department = new Department
             {

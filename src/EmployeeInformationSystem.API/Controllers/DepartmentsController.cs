@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Features.Departments;
 using EmployeeInformationSystem.Application.Features.Employees;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata;
 
@@ -9,21 +10,11 @@ namespace EmployeeInformationSystem.API.Controllers
     [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
-        private readonly CreateDepartmentHandler _createDepartmentHandler;
-        private readonly GetDepartmentByIdHandler _getDepartmentByIdHandler;
-        private readonly UpdateDepartmentHandler _updateDepartmentHandler;
-        private readonly DeleteDepartmentHandler _deleteDepartmentHandler;
+        private readonly IMediator _mediator;
 
-        public DepartmentsController(
-            CreateDepartmentHandler createDepartmentHandler,
-            GetDepartmentByIdHandler getDepartmentByIdHandler,
-            UpdateDepartmentHandler updateDepartmentHandler,
-            DeleteDepartmentHandler deleteDepartmentHandler)
+        public DepartmentsController(IMediator mediator)
         {
-            _createDepartmentHandler = createDepartmentHandler;
-            _getDepartmentByIdHandler = getDepartmentByIdHandler;
-            _updateDepartmentHandler = updateDepartmentHandler;
-            _deleteDepartmentHandler = deleteDepartmentHandler;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -35,7 +26,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.Name,
                 request.CreatedBy);
 
-            var result = await _createDepartmentHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -56,7 +47,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.Name,
                 request.UpdatedBy);
 
-            var result = await _updateDepartmentHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -77,7 +68,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 id,
                 request.DeletedBy);
 
-            var result = await _deleteDepartmentHandler.HandleAsync(
+            var result = await _mediator.Send(
                 command,
                 cancellationToken);
 
@@ -96,7 +87,7 @@ namespace EmployeeInformationSystem.API.Controllers
         {
             var query = new GetDepartmentByIdQuery(id);
 
-            var result = await _getDepartmentByIdHandler.HandleAsync(
+            var result = await _mediator.Send(
                 query,
                 cancellationToken);
 

@@ -2,18 +2,15 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Departments
 {
     public sealed record UpdateDepartmentCommand(
         Guid DepartmentId,
         string Name,
-        Guid UpdatedBy);
+        Guid UpdatedBy)
+        : IRequest<UpdateDepartmentResponse?>;
 
     public sealed record UpdateDepartmentResponse(
         Guid Id,
@@ -21,6 +18,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
         string StatusCode);
 
     public sealed class UpdateDepartmentHandler
+        : IRequestHandler<UpdateDepartmentCommand, UpdateDepartmentResponse?>
     {
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IDepartmentHistoryRepository _departmentHistoryRepository;
@@ -36,7 +34,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<UpdateDepartmentResponse?> HandleAsync(
+        public async Task<UpdateDepartmentResponse?> Handle(
             UpdateDepartmentCommand command,
             CancellationToken cancellationToken = default)
         {

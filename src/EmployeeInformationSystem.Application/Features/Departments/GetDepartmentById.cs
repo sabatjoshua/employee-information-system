@@ -1,13 +1,10 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Departments
 {
-    public sealed record GetDepartmentByIdQuery(Guid DepartmentId);
+    public sealed record GetDepartmentByIdQuery(Guid DepartmentId)
+    : IRequest<GetDepartmentByIdResponse?>;
 
     public sealed record GetDepartmentByIdResponse(
         Guid Id,
@@ -15,6 +12,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
         string StatusCode);
 
     public sealed class GetDepartmentByIdHandler
+    : IRequestHandler<GetDepartmentByIdQuery, GetDepartmentByIdResponse?>
     {
         private readonly IDepartmentRepository _departmentRepository;
 
@@ -24,12 +22,12 @@ namespace EmployeeInformationSystem.Application.Features.Departments
             _departmentRepository = departmentRepository;
         }
 
-        public async Task<GetDepartmentByIdResponse?> HandleAsync(
-            GetDepartmentByIdQuery query,
-            CancellationToken cancellationToken = default)
+        public async Task<GetDepartmentByIdResponse?> Handle(
+        GetDepartmentByIdQuery request,
+        CancellationToken cancellationToken)
         {
             var department = await _departmentRepository.GetByIdAsync(
-                query.DepartmentId,
+                request.DepartmentId,
                 cancellationToken);
 
             if (department is null)

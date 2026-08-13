@@ -2,6 +2,7 @@
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,15 @@ namespace EmployeeInformationSystem.Application.Features.Departments
 
     public sealed record DeleteDepartmentCommand(
         Guid DepartmentId,
-        Guid DeletedBy);
+        Guid DeletedBy)
+        : IRequest<DeleteDepartmentResponse?>;
 
     public sealed record DeleteDepartmentResponse(
         Guid Id,
         string StatusCode);
 
     public sealed class DeleteDepartmentHandler
+        : IRequestHandler<DeleteDepartmentCommand, DeleteDepartmentResponse?>
     {
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IDepartmentHistoryRepository _departmentHistoryRepository;
@@ -35,7 +38,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<DeleteDepartmentResponse?> HandleAsync(
+        public async Task<DeleteDepartmentResponse?> Handle(
             DeleteDepartmentCommand command,
             CancellationToken cancellationToken = default)
         {
