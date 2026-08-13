@@ -32,5 +32,14 @@ namespace EmployeeInformationSystem.Persistence.Repositories
                     x => x.Id == userId,
                     cancellationToken);
         }
+        public async Task<User?> GetByUserNameAsync(
+            string userName,
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(
+                    x => x.UserName == userName,
+                    cancellationToken);
+        }
     }
 }

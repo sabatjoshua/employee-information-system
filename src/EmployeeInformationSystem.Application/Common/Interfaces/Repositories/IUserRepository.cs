@@ -11,5 +11,8 @@ namespace EmployeeInformationSystem.Application.Common.Interfaces.Repositories
         Task<User?> GetByIdAsync(
             Guid userId,
             CancellationToken cancellationToken = default);
+        Task<User?> GetByUserNameAsync(
+            string userName,
+            CancellationToken cancellationToken = default);
     }
 }
