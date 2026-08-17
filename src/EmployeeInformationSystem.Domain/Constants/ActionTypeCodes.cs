@@ -12,5 +12,6 @@ namespace EmployeeInformationSystem.Domain.Constants
         public const string Insert = "INS";
         public const string Update = "UPD";
         public const string Delete = "DEL";
+        public const string Login = "LOGIN";
     }
 }
