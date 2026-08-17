@@ -15,7 +15,8 @@ namespace EmployeeInformationSystem.Application.Features.Authentication
     public sealed record LoginResponse(
     Guid UserId,
     Guid EmployeeId,
-    string UserName);
+    string UserName,
+    string Token);
 
     public sealed class LoginHandler
         : IRequestHandler<LoginCommand, LoginResponse?>
@@ -24,17 +25,20 @@ namespace EmployeeInformationSystem.Application.Features.Authentication
         private readonly IUserHistoryRepository _userHistoryRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
         public LoginHandler(
             IUserRepository userRepository,
             IUserHistoryRepository userHistoryRepository,
             IPasswordHasher passwordHasher,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IJwtTokenGenerator jwtTokenGenerator)
         {
             _userRepository = userRepository;
             _userHistoryRepository = userHistoryRepository;
             _passwordHasher = passwordHasher;
             _unitOfWork = unitOfWork;
+            _jwtTokenGenerator = jwtTokenGenerator;
         }
         public async Task<LoginResponse?> Handle(
             LoginCommand command,
@@ -111,6 +115,11 @@ namespace EmployeeInformationSystem.Application.Features.Authentication
             history.FailedLoginAttempt = user.FailedLoginAttempt;
             history.LastLogin = user.LastLogin;
 
+            var token = _jwtTokenGenerator.GenerateToken(
+                user.Id,
+                user.EmployeeId,
+                user.UserName);
+
             await _userHistoryRepository.AddAsync(
                 history,
                 cancellationToken);
@@ -121,7 +130,8 @@ namespace EmployeeInformationSystem.Application.Features.Authentication
             return new LoginResponse(
                 user.Id,
                 user.EmployeeId,
-                user.UserName);
+                user.UserName,
+                token);
         }
     }
 }

@@ -17,3 +17,6 @@
 /src/EmployeeInformationSystem.Persistence/obj
 /tests/EmployeeInformationSystem.Tests/bin/Debug/net8.0
 /tests/EmployeeInformationSystem.Tests/obj
+/src/EmployeeInformationSystem.API/appsettings.Development.json
+/src/EmployeeInformationSystem.API/appsettings.Development.json
+/src/EmployeeInformationSystem.API/appsettings.Development.json

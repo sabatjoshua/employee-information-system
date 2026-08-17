@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Features.Employees;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
@@ -15,6 +16,7 @@ namespace EmployeeInformationSystem.API.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(
             [FromBody] CreateEmployeeRequest request,
@@ -44,6 +46,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 result);
         }
 
+        [Authorize]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(
             Guid id,
@@ -77,6 +80,7 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(
             Guid id,
@@ -99,6 +103,7 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(
             Guid id,
