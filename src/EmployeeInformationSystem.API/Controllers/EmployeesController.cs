@@ -118,6 +118,20 @@ namespace EmployeeInformationSystem.API.Controllers
 
             return Ok(result);
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+            CancellationToken cancellationToken)
+        {
+            var query = new GetEmployeesQuery();
+
+            var result = await _mediator.Send(
+                query,
+                cancellationToken);
+
+            return Ok(result);
+        }
     }
 
     public sealed record CreateEmployeeRequest(

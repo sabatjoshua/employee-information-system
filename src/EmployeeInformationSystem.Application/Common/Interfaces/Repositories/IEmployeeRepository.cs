@@ -1,9 +1,4 @@
 ﻿using EmployeeInformationSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeInformationSystem.Application.Common.Interfaces.Repositories
 {
@@ -19,6 +14,8 @@ namespace EmployeeInformationSystem.Application.Common.Interfaces.Repositories
 
         Task AddAsync(
             Employee employee,
+            CancellationToken cancellationToken = default);
+        Task<List<Employee>> GetAllAsync(
             CancellationToken cancellationToken = default);
     }
 }

@@ -1,12 +1,8 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using EmployeeInformationSystem.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeInformationSystem.Persistence.Repositories
 {
@@ -48,5 +44,13 @@ namespace EmployeeInformationSystem.Persistence.Repositories
                 employee, 
                 cancellationToken);
         }
+        public async Task<List<Employee>> GetAllAsync(
+        CancellationToken cancellationToken = default)
+            {
+                return await _context.Employees
+                    .AsNoTracking()
+                    .Where(x => x.StatusCode == StatusCodes.Active)
+                    .ToListAsync(cancellationToken);
+            }
     }
 }
