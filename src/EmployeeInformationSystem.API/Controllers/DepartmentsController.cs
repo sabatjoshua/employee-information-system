@@ -23,8 +23,7 @@ namespace EmployeeInformationSystem.API.Controllers
             CancellationToken cancellationToken)
         {
             var command = new CreateDepartmentCommand(
-                request.Name,
-                request.CreatedBy);
+                request.Name);
 
             var result = await _mediator.Send(
                 command,
@@ -45,8 +44,7 @@ namespace EmployeeInformationSystem.API.Controllers
         {
             var command = new UpdateDepartmentCommand(
                 id,
-                request.Name,
-                request.UpdatedBy);
+                request.Name);
 
             var result = await _mediator.Send(
                 command,
@@ -64,12 +62,10 @@ namespace EmployeeInformationSystem.API.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(
             Guid id,
-            [FromBody] DeleteDepartmentRequest request,
             CancellationToken cancellationToken)
         {
             var command = new DeleteDepartmentCommand(
-                id,
-                request.DeletedBy);
+                id);
 
             var result = await _mediator.Send(
                 command,
@@ -104,11 +100,7 @@ namespace EmployeeInformationSystem.API.Controllers
         }
     }
     public sealed record CreateDepartmentRequest(
-        string Name,
-        Guid CreatedBy);
+        string Name);
     public sealed record UpdateDepartmentRequest(
-    string Name,
-    Guid UpdatedBy); 
-    public sealed record DeleteDepartmentRequest(
-    Guid DeletedBy);
+    string Name); 
 }

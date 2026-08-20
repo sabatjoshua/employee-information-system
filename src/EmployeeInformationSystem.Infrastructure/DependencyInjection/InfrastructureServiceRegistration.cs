@@ -18,6 +18,9 @@ namespace EmployeeInformationSystem.Infrastructure.DependencyInjection
 
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             return services;
         }
     }

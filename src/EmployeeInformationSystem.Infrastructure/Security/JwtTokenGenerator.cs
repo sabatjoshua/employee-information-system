@@ -26,7 +26,7 @@ namespace EmployeeInformationSystem.Infrastructure.Security
             var claims = new[]
             {
                 new Claim(
-                    JwtRegisteredClaimNames.Sub,
+                    "userId",
                     userId.ToString()),
 
                 new Claim(
@@ -34,7 +34,7 @@ namespace EmployeeInformationSystem.Infrastructure.Security
                     employeeId.ToString()),
 
                 new Claim(
-                    JwtRegisteredClaimNames.UniqueName,
+                    "userName",
                     userName)
             };
 

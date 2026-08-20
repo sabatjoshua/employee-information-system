@@ -10,8 +10,7 @@ namespace EmployeeInformationSystem.Application.Features.Users
     public sealed record CreateUserCommand(
         Guid EmployeeId,
         string UserName,
-        string Password,
-        Guid CreatedBy)
+        string Password)
         : IRequest<CreateUserResponse>;
 
     public sealed record CreateUserResponse(
@@ -26,17 +25,20 @@ namespace EmployeeInformationSystem.Application.Features.Users
         private readonly IUserHistoryRepository _userHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly ICurrentUserService _currentUserService;
 
         public CreateUserHandler(
             IUserRepository userRepository,
             IUserHistoryRepository userHistoryRepository,
             IUnitOfWork unitOfWork,
-            IPasswordHasher passwordHasher)
+            IPasswordHasher passwordHasher,
+            ICurrentUserService currentUserService)
         {
             _userRepository = userRepository;
             _userHistoryRepository = userHistoryRepository;
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
+            _currentUserService = currentUserService;
         }
 
         public async Task<CreateUserResponse> Handle(
@@ -52,7 +54,7 @@ namespace EmployeeInformationSystem.Application.Features.Users
                 MustChangePassword = true,
                 IsLocked = false,
                 StatusCode = StatusCodes.Active,
-                CreatedBy = command.CreatedBy,
+                CreatedBy = _currentUserService.UserId,
                 CreatedAt = DateTimeOffset.UtcNow
             };
 
@@ -69,7 +71,7 @@ namespace EmployeeInformationSystem.Application.Features.Users
                 CreatedBy = user.CreatedBy,
                 CreatedAt = user.CreatedAt,
                 ActionTypeCode = ActionTypeCodes.Insert,
-                ActionBy = command.CreatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -7,8 +8,7 @@ using MediatR;
 namespace EmployeeInformationSystem.Application.Features.Employees
 {
     public sealed record DeleteEmployeeCommand(
-        Guid EmployeeId,
-        Guid DeletedBy)
+        Guid EmployeeId)
     : IRequest<DeleteEmployeeResponse?>;
 
     public sealed record DeleteEmployeeResponse(
@@ -21,15 +21,18 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
         public DeleteEmployeeHandler(
             IEmployeeRepository employeeRepository,
             IEmployeeHistoryRepository employeeHistoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             _employeeRepository = employeeRepository;
             _employeeHistoryRepository = employeeHistoryRepository;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<DeleteEmployeeResponse?> Handle(
@@ -65,7 +68,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 CreatedAt = employee.CreatedAt,
                 StatusCode = employee.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Delete,
-                ActionBy = command.DeletedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

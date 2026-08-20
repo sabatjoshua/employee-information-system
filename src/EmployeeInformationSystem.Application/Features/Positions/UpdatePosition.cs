@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -9,8 +10,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
     public sealed record UpdatePositionCommand(
         Guid PositionId,
         string Name,
-        Guid DepartmentId,
-        Guid UpdatedBy)
+        Guid DepartmentId)
         : IRequest<UpdatePositionResponse?>;
 
     public sealed record UpdatePositionResponse(
@@ -25,15 +25,18 @@ namespace EmployeeInformationSystem.Application.Features.Positions
         private readonly IPositionRepository _positionRepository;
         private readonly IPositionHistoryRepository _positionHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
         public UpdatePositionHandler(
             IPositionRepository positionRepository,
             IPositionHistoryRepository positionHistoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             _positionRepository = positionRepository;
             _positionHistoryRepository = positionHistoryRepository;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<UpdatePositionResponse?> Handle(
@@ -52,7 +55,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
             position.Name = command.Name;
             position.DepartmentId = command.DepartmentId;
             position.SetUpdated(
-                command.UpdatedBy,
+                _currentUserService.UserId,
                 DateTimeOffset.UtcNow);
 
             var history = new PositionHistory
@@ -64,7 +67,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
                 CreatedAt = position.CreatedAt,
                 StatusCode = position.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Update,
-                ActionBy = command.UpdatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

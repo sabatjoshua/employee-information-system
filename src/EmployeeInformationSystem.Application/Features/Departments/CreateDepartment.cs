@@ -1,12 +1,13 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Departments
 {
-    public sealed record CreateDepartmentCommand(string Name, Guid CreatedBy)
+    public sealed record CreateDepartmentCommand(string Name)
         : IRequest<CreateDepartmentResponse>;
 
     public sealed record CreateDepartmentResponse(
@@ -19,15 +20,18 @@ namespace EmployeeInformationSystem.Application.Features.Departments
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDepartmentHistoryRepository _departmentHistoryRepository;
+        private readonly ICurrentUserService _currentUserService;
 
         public CreateDepartmentHandler(
             IDepartmentRepository departmentRepository,
             IUnitOfWork unitOfWork,
-            IDepartmentHistoryRepository departmentHistoryRepository)
+            IDepartmentHistoryRepository departmentHistoryRepository,
+            ICurrentUserService currentUserService)
         {
             _departmentRepository = departmentRepository;
             _unitOfWork = unitOfWork;
             _departmentHistoryRepository = departmentHistoryRepository;
+            _currentUserService = currentUserService;
         }
 
         public async Task<CreateDepartmentResponse> Handle(
@@ -37,7 +41,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
             var department = new Department
             {
                 Name = command.Name,
-                CreatedBy = command.CreatedBy,
+                CreatedBy = _currentUserService.UserId,
                 CreatedAt = DateTimeOffset.UtcNow,
                 StatusCode = StatusCodes.Active
             };
@@ -50,7 +54,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
                 CreatedAt = department.CreatedAt,
                 StatusCode = department.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Insert,
-                ActionBy = command.CreatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

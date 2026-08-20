@@ -24,8 +24,7 @@ namespace EmployeeInformationSystem.API.Controllers
         {
             var command = new CreatePositionCommand(
                 request.Name,
-                request.DepartmentId,
-                request.CreatedBy);
+                request.DepartmentId);
 
             var result = await _mediator.Send(
                 command,
@@ -47,8 +46,7 @@ namespace EmployeeInformationSystem.API.Controllers
             var command = new UpdatePositionCommand(
                 id,
                 request.Name,
-                request.DepartmentId,
-                request.UpdatedBy);
+                request.DepartmentId);
 
             var result = await _mediator.Send(
                 command,
@@ -65,13 +63,11 @@ namespace EmployeeInformationSystem.API.Controllers
         [Authorize]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(
-            Guid id,
-            [FromBody] DeletePositionRequest request,
+            Guid id,            
             CancellationToken cancellationToken)
         {
             var command = new DeletePositionCommand(
-                id,
-                request.DeletedBy);
+                id);
 
             var result = await _mediator.Send(
                 command,
@@ -107,14 +103,9 @@ namespace EmployeeInformationSystem.API.Controllers
     }
     public sealed record CreatePositionRequest(
         string Name,
-        Guid DepartmentId,
-        Guid CreatedBy);
+        Guid DepartmentId);
 
     public sealed record UpdatePositionRequest(
         string Name,
-        Guid DepartmentId,
-        Guid UpdatedBy);
-
-    public sealed record DeletePositionRequest(
-        Guid DeletedBy);
+        Guid DepartmentId);
 }

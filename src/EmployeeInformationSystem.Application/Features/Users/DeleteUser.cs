@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -7,8 +8,7 @@ using MediatR;
 namespace EmployeeInformationSystem.Application.Features.Users
 {
     public sealed record DeleteUserCommand(
-        Guid UserId,
-        Guid DeletedBy)
+        Guid UserId)
         : IRequest<DeleteUserResponse?>;
 
     public sealed record DeleteUserResponse(
@@ -21,15 +21,18 @@ namespace EmployeeInformationSystem.Application.Features.Users
         private readonly IUserRepository _userRepository;
         private readonly IUserHistoryRepository _userHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
         public DeleteUserHandler(
             IUserRepository userRepository,
             IUserHistoryRepository userHistoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             _userRepository = userRepository;
             _userHistoryRepository = userHistoryRepository;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<DeleteUserResponse?> Handle(
@@ -62,7 +65,7 @@ namespace EmployeeInformationSystem.Application.Features.Users
                 CreatedBy = user.CreatedBy,
                 CreatedAt = user.CreatedAt,
                 ActionTypeCode = ActionTypeCodes.Delete,
-                ActionBy = command.DeletedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

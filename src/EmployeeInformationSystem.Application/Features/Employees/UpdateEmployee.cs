@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -18,8 +19,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         string? MobileNo,
         DateTimeOffset HireDate,
         Guid DepartmentId,
-        Guid PositionId,
-        Guid UpdatedBy)
+        Guid PositionId)
     : IRequest<UpdateEmployeeResponse?>;
 
     public sealed record UpdateEmployeeResponse(
@@ -36,15 +36,18 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
         public UpdateEmployeeHandler(
             IEmployeeRepository employeeRepository,
             IEmployeeHistoryRepository employeeHistoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             _employeeRepository = employeeRepository;
             _employeeHistoryRepository = employeeHistoryRepository;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<UpdateEmployeeResponse?> Handle(
@@ -73,7 +76,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             employee.PositionId = command.PositionId;
 
             employee.SetUpdated(
-                command.UpdatedBy,
+                _currentUserService.UserId,
                 DateTimeOffset.UtcNow);
 
             var history = new EmployeeHistory
@@ -94,7 +97,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 CreatedAt = employee.CreatedAt,
                 StatusCode = employee.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Update,
-                ActionBy = command.UpdatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

@@ -25,8 +25,7 @@ namespace EmployeeInformationSystem.API.Controllers
             var command = new CreateUserCommand(
                 request.EmployeeId,
                 request.UserName,
-                request.Password,
-                request.CreatedBy);
+                request.Password);
 
             var result = await _mediator.Send(
                 command,
@@ -71,8 +70,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.UserName,
                 request.Password,
                 request.MustChangePassword,
-                request.IsLocked,
-                request.UpdatedBy);
+                request.IsLocked);
 
             var result = await _mediator.Send(
                 command,
@@ -90,12 +88,10 @@ namespace EmployeeInformationSystem.API.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(
             Guid id,
-            [FromBody] DeleteUserRequest request,
             CancellationToken cancellationToken)
         {
             var command = new DeleteUserCommand(
-                id,
-                request.DeletedBy);
+                id);
 
             var result = await _mediator.Send(
                 command,
@@ -113,17 +109,12 @@ namespace EmployeeInformationSystem.API.Controllers
     public sealed record CreateUserRequest(
         Guid EmployeeId,
         string UserName,
-        string Password,
-        Guid CreatedBy);
+        string Password);
 
     public sealed record UpdateUserRequest(
         Guid EmployeeId,
         string UserName,
         string? Password,
         bool MustChangePassword,
-        bool IsLocked,
-        Guid UpdatedBy);
-
-    public sealed record DeleteUserRequest(
-        Guid DeletedBy);
+        bool IsLocked);
 }

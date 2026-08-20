@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -8,8 +9,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
 {
     public sealed record UpdateDepartmentCommand(
         Guid DepartmentId,
-        string Name,
-        Guid UpdatedBy)
+        string Name)
         : IRequest<UpdateDepartmentResponse?>;
 
     public sealed record UpdateDepartmentResponse(
@@ -23,15 +23,18 @@ namespace EmployeeInformationSystem.Application.Features.Departments
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IDepartmentHistoryRepository _departmentHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
         public UpdateDepartmentHandler(
             IDepartmentRepository departmentRepository,
             IDepartmentHistoryRepository departmentHistoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             _departmentRepository = departmentRepository;
             _departmentHistoryRepository = departmentHistoryRepository;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<UpdateDepartmentResponse?> Handle(
@@ -48,7 +51,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
             }
 
             department.Name = command.Name;
-            department.SetUpdated(command.UpdatedBy, DateTimeOffset.UtcNow);
+            department.SetUpdated(_currentUserService.UserId, DateTimeOffset.UtcNow);
 
             var history = new DepartmentHistory
             {
@@ -58,7 +61,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
                 CreatedAt = department.CreatedAt,
                 StatusCode = department.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Update,
-                ActionBy = command.UpdatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -7,8 +8,7 @@ using MediatR;
 namespace EmployeeInformationSystem.Application.Features.Positions
 {
     public sealed record DeletePositionCommand(
-        Guid PositionId,
-        Guid DeletedBy)
+        Guid PositionId)
         : IRequest<DeletePositionResponse?>;
 
     public sealed record DeletePositionResponse(
@@ -21,15 +21,18 @@ namespace EmployeeInformationSystem.Application.Features.Positions
         private readonly IPositionRepository _positionRepository;
         private readonly IPositionHistoryRepository _positionHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
         public DeletePositionHandler(
             IPositionRepository positionRepository,
             IPositionHistoryRepository positionHistoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             _positionRepository = positionRepository;
             _positionHistoryRepository = positionHistoryRepository;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<DeletePositionResponse?> Handle(
@@ -56,7 +59,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
                 CreatedAt = position.CreatedAt,
                 StatusCode = position.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Delete,
-                ActionBy = command.DeletedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

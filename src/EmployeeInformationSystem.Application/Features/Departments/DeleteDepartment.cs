@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -13,8 +14,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
 {
 
     public sealed record DeleteDepartmentCommand(
-        Guid DepartmentId,
-        Guid DeletedBy)
+        Guid DepartmentId)
         : IRequest<DeleteDepartmentResponse?>;
 
     public sealed record DeleteDepartmentResponse(
@@ -27,15 +27,18 @@ namespace EmployeeInformationSystem.Application.Features.Departments
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IDepartmentHistoryRepository _departmentHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICurrentUserService _currentUserService;
 
         public DeleteDepartmentHandler(
             IDepartmentRepository departmentRepository,
             IDepartmentHistoryRepository departmentHistoryRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             _departmentRepository = departmentRepository;
             _departmentHistoryRepository = departmentHistoryRepository;
             _unitOfWork = unitOfWork;
+            _currentUserService = currentUserService;
         }
 
         public async Task<DeleteDepartmentResponse?> Handle(
@@ -61,7 +64,7 @@ namespace EmployeeInformationSystem.Application.Features.Departments
                 CreatedAt = department.CreatedAt,
                 StatusCode = department.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Delete,
-                ActionBy = command.DeletedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
             var updatedBy = department.UpdatedBy;

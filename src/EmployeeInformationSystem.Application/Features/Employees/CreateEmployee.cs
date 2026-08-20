@@ -1,5 +1,6 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
@@ -17,8 +18,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         string? MobileNo,
         DateTimeOffset HireDate,
         Guid DepartmentId,
-        Guid PositionId,
-        Guid CreatedBy)
+        Guid PositionId)
     : IRequest<CreateEmployeeResponse>;
 
     public sealed record CreateEmployeeResponse(
@@ -32,16 +32,19 @@ namespace EmployeeInformationSystem.Application.Features.Employees
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEmployeeHistoryRepository _employeeHistoryRepository;
+        private readonly IEmployeeHistoryRepository _employeeHistoryRepository; 
+        private readonly ICurrentUserService _currentUserService;
 
         public CreateEmployeeHandler(
             IEmployeeRepository employeeRepository,
             IUnitOfWork unitOfWork,
-            IEmployeeHistoryRepository employeeHistoryRepository)
+            IEmployeeHistoryRepository employeeHistoryRepository,
+            ICurrentUserService currentUserService)
         {
             _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
             _employeeHistoryRepository = employeeHistoryRepository;
+            _currentUserService = currentUserService;
         }
 
         public async Task<CreateEmployeeResponse> Handle(
@@ -61,7 +64,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 HireDate = command.HireDate,
                 DepartmentId = command.DepartmentId,
                 PositionId = command.PositionId,
-                CreatedBy = command.CreatedBy,
+                CreatedBy = _currentUserService.UserId,
                 CreatedAt = DateTimeOffset.UtcNow,
                 StatusCode = StatusCodes.Active
             };
@@ -84,7 +87,7 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 CreatedAt = employee.CreatedAt,
                 StatusCode = employee.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Insert,
-                ActionBy = command.CreatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

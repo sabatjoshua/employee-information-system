@@ -33,8 +33,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.MobileNo,
                 request.HireDate,
                 request.DepartmentId,
-                request.PositionId,
-                request.CreatedBy);
+                request.PositionId);
 
             var result = await _mediator.Send(
                 command,
@@ -65,8 +64,7 @@ namespace EmployeeInformationSystem.API.Controllers
                 request.MobileNo,
                 request.HireDate,
                 request.DepartmentId,
-                request.PositionId,
-                request.UpdatedBy);
+                request.PositionId);
 
             var result = await _mediator.Send(
                 command,
@@ -84,12 +82,10 @@ namespace EmployeeInformationSystem.API.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(
             Guid id,
-            [FromBody] DeleteEmployeeRequest request,
             CancellationToken cancellationToken)
         {
             var command = new DeleteEmployeeCommand(
-                id,
-                request.DeletedBy);
+                id);
 
             var result = await _mediator.Send(
                 command,
@@ -135,8 +131,7 @@ namespace EmployeeInformationSystem.API.Controllers
         string? MobileNo,
         DateTimeOffset HireDate,
         Guid DepartmentId,
-        Guid PositionId,
-        Guid CreatedBy);
+        Guid PositionId);
 
     public sealed record UpdateEmployeeRequest(
         string EmployeeNo,
@@ -149,9 +144,5 @@ namespace EmployeeInformationSystem.API.Controllers
         string? MobileNo,
         DateTimeOffset HireDate,
         Guid DepartmentId,
-        Guid PositionId,
-        Guid UpdatedBy);
-
-    public sealed record DeleteEmployeeRequest(
-        Guid DeletedBy);
+        Guid PositionId);
 }

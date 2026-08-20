@@ -1,12 +1,13 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Domain.Constants;
 using EmployeeInformationSystem.Domain.Entities;
 using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Positions
 {
-    public sealed record CreatePositionCommand(string Name, Guid DepartmentId, Guid CreatedBy)
+    public sealed record CreatePositionCommand(string Name, Guid DepartmentId)
         : IRequest<CreatePositionResponse>;
 
     public sealed record CreatePositionResponse(
@@ -19,15 +20,18 @@ namespace EmployeeInformationSystem.Application.Features.Positions
         private readonly IPositionRepository _positionRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPositionHistoryRepository _positionHistoryRepository;
+        private readonly ICurrentUserService _currentUserService;
 
         public CreatePositionHandler(
             IPositionRepository positionRepository,
             IUnitOfWork unitOfWork,
-            IPositionHistoryRepository positionHistoryRepository)
+            IPositionHistoryRepository positionHistoryRepository,
+            ICurrentUserService currentUserService)
         {
             _positionRepository = positionRepository;
             _unitOfWork = unitOfWork;
             _positionHistoryRepository = positionHistoryRepository;
+            _currentUserService = currentUserService;
         }
 
         public async Task<CreatePositionResponse> Handle(
@@ -38,7 +42,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
             {
                 Name = command.Name,
                 DepartmentId = command.DepartmentId,
-                CreatedBy = command.CreatedBy,
+                CreatedBy = _currentUserService.UserId,
                 CreatedAt = DateTimeOffset.UtcNow,
                 StatusCode = StatusCodes.Active
             };
@@ -52,7 +56,7 @@ namespace EmployeeInformationSystem.Application.Features.Positions
                 CreatedAt = position.CreatedAt,
                 StatusCode = position.StatusCode,
                 ActionTypeCode = ActionTypeCodes.Insert,
-                ActionBy = command.CreatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 

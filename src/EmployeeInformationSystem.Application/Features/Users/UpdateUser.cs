@@ -13,8 +13,7 @@ namespace EmployeeInformationSystem.Application.Features.Users
         string UserName,
         string? Password,
         bool MustChangePassword,
-        bool IsLocked,
-        Guid UpdatedBy)
+        bool IsLocked)
         : IRequest<UpdateUserResponse?>;
 
     public sealed record UpdateUserResponse(
@@ -32,17 +31,20 @@ namespace EmployeeInformationSystem.Application.Features.Users
         private readonly IUserHistoryRepository _userHistoryRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly ICurrentUserService _currentUserService;
 
         public UpdateUserHandler(
             IUserRepository userRepository,
             IUserHistoryRepository userHistoryRepository,
             IUnitOfWork unitOfWork,
-            IPasswordHasher passwordHasher)
+            IPasswordHasher passwordHasher,
+            ICurrentUserService currentUserService)
         {
             _userRepository = userRepository;
             _userHistoryRepository = userHistoryRepository;
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
+            _currentUserService = currentUserService;
         }
 
         public async Task<UpdateUserResponse?> Handle(
@@ -69,7 +71,7 @@ namespace EmployeeInformationSystem.Application.Features.Users
             }
 
             user.SetUpdated(
-                command.UpdatedBy,
+                _currentUserService.UserId,
                 DateTimeOffset.UtcNow);
 
             var history = new UserHistory
@@ -87,7 +89,7 @@ namespace EmployeeInformationSystem.Application.Features.Users
                 CreatedBy = user.CreatedBy,
                 CreatedAt = user.CreatedAt,
                 ActionTypeCode = ActionTypeCodes.Update,
-                ActionBy = command.UpdatedBy,
+                ActionBy = _currentUserService.UserId,
                 ActionAt = DateTimeOffset.UtcNow
             };
 
