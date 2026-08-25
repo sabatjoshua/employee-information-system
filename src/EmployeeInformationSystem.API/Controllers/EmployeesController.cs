@@ -122,9 +122,13 @@ namespace EmployeeInformationSystem.API.Controllers
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll(
-            CancellationToken cancellationToken)
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            CancellationToken cancellationToken = default)
         {
-            var query = new GetEmployeesQuery();
+            var query = new GetEmployeesQuery(
+                pageNumber,
+                pageSize);
 
             var result = await _mediator.Send(
                 query,

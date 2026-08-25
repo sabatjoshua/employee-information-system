@@ -15,7 +15,11 @@ namespace EmployeeInformationSystem.Application.Common.Interfaces.Repositories
         Task AddAsync(
             Employee employee,
             CancellationToken cancellationToken = default);
-        Task<List<Employee>> GetAllAsync(
+        Task<List<Employee>> GetPagedAsync(
+            int pageNumber,
+            int pageSize,
+            CancellationToken cancellationToken = default);
+        Task<int> CountAsync(
             CancellationToken cancellationToken = default);
     }
 }

@@ -3,8 +3,10 @@ using MediatR;
 
 namespace EmployeeInformationSystem.Application.Features.Employees
 {
-    public sealed record GetEmployeesQuery
-        : IRequest<List<GetEmployeesResponse>>;
+    public sealed record GetEmployeesQuery(
+    int PageNumber,
+    int PageSize)
+    : IRequest<GetEmployeesPagedResponse>;
 
     public sealed record GetEmployeesResponse(
         Guid EmployeeId,
@@ -19,9 +21,15 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         DateTimeOffset HireDate,
         Guid DepartmentId,
         Guid PositionId);
+    public sealed record GetEmployeesPagedResponse(
+    List<GetEmployeesResponse> Items,
+    int PageNumber,
+    int PageSize,
+    int TotalCount,
+    int TotalPages);
 
     public sealed class GetEmployeesHandler
-        : IRequestHandler<GetEmployeesQuery, List<GetEmployeesResponse>>
+    : IRequestHandler<GetEmployeesQuery, GetEmployeesPagedResponse>
     {
         private readonly IEmployeeRepository _employeeRepository;
 
@@ -31,14 +39,19 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<List<GetEmployeesResponse>> Handle(
+        public async Task<GetEmployeesPagedResponse> Handle(
             GetEmployeesQuery query,
             CancellationToken cancellationToken)
         {
-            var employees = await _employeeRepository.GetAllAsync(
+            var employees = await _employeeRepository.GetPagedAsync(
+                query.PageNumber,
+                query.PageSize,
                 cancellationToken);
 
-            return employees
+            var totalCount = await _employeeRepository.CountAsync(
+                cancellationToken);
+
+            var items = employees
                 .Select(employee => new GetEmployeesResponse(
                     employee.Id,
                     employee.EmployeeNo,
@@ -53,6 +66,16 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                     employee.DepartmentId,
                     employee.PositionId))
                 .ToList();
+
+            var totalPages = (int)Math.Ceiling(
+                totalCount / (double)query.PageSize);
+
+            return new GetEmployeesPagedResponse(
+                items,
+                query.PageNumber,
+                query.PageSize,
+                totalCount,
+                totalPages);
         }
     }
 }

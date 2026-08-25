@@ -44,13 +44,28 @@ namespace EmployeeInformationSystem.Persistence.Repositories
                 employee, 
                 cancellationToken);
         }
-        public async Task<List<Employee>> GetAllAsync(
-        CancellationToken cancellationToken = default)
-            {
-                return await _context.Employees
-                    .AsNoTracking()
-                    .Where(x => x.StatusCode == StatusCodes.Active)
-                    .ToListAsync(cancellationToken);
-            }
+        public async Task<List<Employee>> GetPagedAsync(
+            int pageNumber,
+            int pageSize,
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.Employees
+                .AsNoTracking()
+                .Where(x => x.StatusCode == StatusCodes.Active)
+                .OrderBy(x => x.EmployeeNo)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<int> CountAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.Employees
+                .AsNoTracking()
+                .CountAsync(
+                    x => x.StatusCode == StatusCodes.Active,
+                    cancellationToken);
+        }
     }
 }
