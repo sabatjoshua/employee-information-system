@@ -18,8 +18,11 @@ namespace EmployeeInformationSystem.Application.Common.Interfaces.Repositories
         Task<List<Employee>> GetPagedAsync(
             int pageNumber,
             int pageSize,
+            string? search,
             CancellationToken cancellationToken = default);
+
         Task<int> CountAsync(
+            string? search,
             CancellationToken cancellationToken = default);
     }
 }

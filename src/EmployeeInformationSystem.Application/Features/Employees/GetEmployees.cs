@@ -5,7 +5,8 @@ namespace EmployeeInformationSystem.Application.Features.Employees
 {
     public sealed record GetEmployeesQuery(
     int PageNumber,
-    int PageSize)
+    int PageSize,
+    string? Search)
     : IRequest<GetEmployeesPagedResponse>;
 
     public sealed record GetEmployeesResponse(
@@ -46,9 +47,11 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             var employees = await _employeeRepository.GetPagedAsync(
                 query.PageNumber,
                 query.PageSize,
+                query.Search,
                 cancellationToken);
 
             var totalCount = await _employeeRepository.CountAsync(
+                query.Search,
                 cancellationToken);
 
             var items = employees

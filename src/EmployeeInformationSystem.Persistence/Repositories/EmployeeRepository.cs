@@ -47,11 +47,26 @@ namespace EmployeeInformationSystem.Persistence.Repositories
         public async Task<List<Employee>> GetPagedAsync(
             int pageNumber,
             int pageSize,
+            string? search,
             CancellationToken cancellationToken = default)
         {
-            return await _context.Employees
+            var query = _context.Employees
                 .AsNoTracking()
-                .Where(x => x.StatusCode == StatusCodes.Active)
+                .Where(x => x.StatusCode == StatusCodes.Active);
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(x =>
+                    x.EmployeeNo.Contains(search) ||
+                    x.FirstName.Contains(search) ||
+                    (x.MiddleName != null &&
+                        x.MiddleName.Contains(search)) ||
+                    x.LastName.Contains(search) ||
+                    (x.Email != null &&
+                        x.Email.Contains(search)));
+            }
+
+            return await query
                 .OrderBy(x => x.EmployeeNo)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -59,13 +74,26 @@ namespace EmployeeInformationSystem.Persistence.Repositories
         }
 
         public async Task<int> CountAsync(
+            string? search,
             CancellationToken cancellationToken = default)
         {
-            return await _context.Employees
+            var query = _context.Employees
                 .AsNoTracking()
-                .CountAsync(
-                    x => x.StatusCode == StatusCodes.Active,
-                    cancellationToken);
+                .Where(x => x.StatusCode == StatusCodes.Active);
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(x =>
+                    x.EmployeeNo.Contains(search) ||
+                    x.FirstName.Contains(search) ||
+                    (x.MiddleName != null &&
+                        x.MiddleName.Contains(search)) ||
+                    x.LastName.Contains(search) ||
+                    (x.Email != null &&
+                        x.Email.Contains(search)));
+            }
+
+            return await query.CountAsync(cancellationToken);
         }
     }
 }
