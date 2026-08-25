@@ -44,9 +44,19 @@ namespace EmployeeInformationSystem.Application.Features.Employees
             GetEmployeesQuery query,
             CancellationToken cancellationToken)
         {
+            var pageNumber = query.PageNumber < 1
+                ? 1
+                : query.PageNumber;
+
+            var pageSize = query.PageSize < 1
+                ? 10
+                : query.PageSize;
+
+            pageSize = Math.Min(pageSize, 100);
+
             var employees = await _employeeRepository.GetPagedAsync(
-                query.PageNumber,
-                query.PageSize,
+                pageNumber,
+                pageSize,
                 query.Search,
                 cancellationToken);
 
@@ -71,12 +81,12 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 .ToList();
 
             var totalPages = (int)Math.Ceiling(
-                totalCount / (double)query.PageSize);
+                totalCount / (double)pageSize);
 
             return new GetEmployeesPagedResponse(
                 items,
-                query.PageNumber,
-                query.PageSize,
+                pageNumber,
+                pageSize,
                 totalCount,
                 totalPages);
         }
