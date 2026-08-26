@@ -28,6 +28,9 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
             services.AddScoped<IDepartmentHistoryRepository,DepartmentHistoryRepository>();
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IPositionHistoryRepository, PositionHistoryRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRoleHistoryRepository, RoleHistoryRepository>();
+
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUnitOfWork>(
                 provider => provider.GetRequiredService<ApplicationDbContext>());
