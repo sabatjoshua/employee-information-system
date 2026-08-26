@@ -30,6 +30,8 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
             services.AddScoped<IPositionHistoryRepository, PositionHistoryRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoleHistoryRepository, RoleHistoryRepository>();
+            services.AddScoped<IFunctionKeyRepository, FunctionKeyRepository>();
+            services.AddScoped<IFunctionKeyHistoryRepository, FunctionKeyHistoryRepository>();
 
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUnitOfWork>(
