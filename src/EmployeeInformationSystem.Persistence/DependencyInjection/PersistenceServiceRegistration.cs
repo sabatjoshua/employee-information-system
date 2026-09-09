@@ -1,9 +1,10 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces;
 using EmployeeInformationSystem.Application.Common.Interfaces.Repositories;
 using EmployeeInformationSystem.Application.Common.Interfaces.Security;
+using EmployeeInformationSystem.Infrastructure.Security;
 using EmployeeInformationSystem.Persistence.Contexts;
 using EmployeeInformationSystem.Persistence.Repositories;
-using EmployeeInformationSystem.Infrastructure.Security;
+using EmployeeInformationSystem.Persistence.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,7 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUnitOfWork>(
                 provider => provider.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped<IPermissionService, PermissionService>();
 
             return services;
         }

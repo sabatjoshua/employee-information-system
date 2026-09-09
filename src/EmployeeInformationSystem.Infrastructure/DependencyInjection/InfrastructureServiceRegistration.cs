@@ -1,5 +1,7 @@
 ﻿using EmployeeInformationSystem.Application.Common.Interfaces.Security;
 using EmployeeInformationSystem.Infrastructure.Security;
+using EmployeeInformationSystem.Infrastructure.Security.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +23,9 @@ namespace EmployeeInformationSystem.Infrastructure.DependencyInjection
             services.AddHttpContextAccessor();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IAuthorizationHandler,PermissionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider,PermissionAuthorizationPolicyProvider>();
+
             return services;
         }
     }
