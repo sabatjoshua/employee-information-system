@@ -1,4 +1,5 @@
 ﻿using EmployeeInformationSystem.API.Authorization;
+using EmployeeInformationSystem.Application.Common.Security;
 using EmployeeInformationSystem.Application.Features.Employees;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +19,7 @@ namespace EmployeeInformationSystem.API.Controllers
         }
 
         //[Authorize]
-        [HasPermission("EMPLOYEE_CREATE")]
+        [HasPermission(Permissions.EmployeeCreate)]
         [HttpPost]
         public async Task<IActionResult> Create(
             [FromBody] CreateEmployeeRequest request,
@@ -48,7 +49,7 @@ namespace EmployeeInformationSystem.API.Controllers
         }
 
         //[Authorize]
-        [HasPermission("EMPLOYEE_UPDATE")]
+        [HasPermission(Permissions.EmployeeUpdate)]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(
             Guid id,
@@ -82,7 +83,7 @@ namespace EmployeeInformationSystem.API.Controllers
         }
 
         //[Authorize]
-        [HasPermission("EMPLOYEE_DELETE")]
+        [HasPermission(Permissions.EmployeeDelete)]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(
             Guid id,
@@ -104,7 +105,7 @@ namespace EmployeeInformationSystem.API.Controllers
         }
 
         //[Authorize]
-        [HasPermission("EMPLOYEE_VIEW")]
+        [HasPermission(Permissions.EmployeeView)]
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(
             Guid id,
@@ -125,7 +126,7 @@ namespace EmployeeInformationSystem.API.Controllers
         }
 
         //[Authorize]
-        [HasPermission("EMPLOYEE_VIEW")]
+        [HasPermission(Permissions.EmployeeView)]
         [HttpGet]
         public async Task<IActionResult> GetAll(
             [FromQuery] int pageNumber = 1,
