@@ -2,10 +2,10 @@
 
 namespace EmployeeInformationSystem.Application.Common.Interfaces.Repositories
 {
-    public interface IEmployeeHistoryRepository
+    public interface IEmployeeFileHistoryRepository
     {
         Task AddAsync(
-            EmployeeHistory history,
+            EmployeeFileHistory history,
             CancellationToken cancellationToken = default);
     }
 }

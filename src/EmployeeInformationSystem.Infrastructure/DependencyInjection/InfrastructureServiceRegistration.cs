@@ -1,4 +1,6 @@
-﻿using EmployeeInformationSystem.Application.Common.Interfaces.Security;
+﻿using EmployeeInformationSystem.Application.Common.Interfaces.Files;
+using EmployeeInformationSystem.Application.Common.Interfaces.Security;
+using EmployeeInformationSystem.Infrastructure.Files;
 using EmployeeInformationSystem.Infrastructure.Security;
 using EmployeeInformationSystem.Infrastructure.Security.Authorization;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +27,7 @@ namespace EmployeeInformationSystem.Infrastructure.DependencyInjection
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IAuthorizationHandler,PermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider,PermissionAuthorizationPolicyProvider>();
+            services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
             return services;
         }

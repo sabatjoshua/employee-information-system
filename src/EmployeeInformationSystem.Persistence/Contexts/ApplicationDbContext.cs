@@ -23,8 +23,8 @@ namespace EmployeeInformationSystem.Persistence.Contexts
         public DbSet<User> Users => Set<User>();
         public DbSet<UserHistory> UserHistories => Set<UserHistory>();
 
-        public DbSet<EmployeeFiles> EmployeeFiles => Set<EmployeeFiles>();
-        public DbSet<EmployeeFilesHistory> EmployeeFilesHistories => Set<EmployeeFilesHistory>();
+        public DbSet<EmployeeFile> EmployeeFiles => Set<EmployeeFile>();
+        public DbSet<EmployeeFileHistory> EmployeeFilesHistories => Set<EmployeeFileHistory>();
 
         public DbSet<Department> Departments => Set<Department>();
         public DbSet<DepartmentHistory> DepartmentHistories => Set<DepartmentHistory>();

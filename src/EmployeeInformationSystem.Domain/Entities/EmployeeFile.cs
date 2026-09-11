@@ -3,7 +3,7 @@ using System;
 
 namespace EmployeeInformationSystem.Domain.Entities
 {
-    public class EmployeeFiles : AuditableEntity
+    public class EmployeeFile : AuditableEntity
     {
         public required Guid EmployeeId { get; set; }
         public required string FilePath { get; set; }

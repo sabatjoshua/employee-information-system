@@ -3,7 +3,7 @@ using System;
 
 namespace EmployeeInformationSystem.Domain.Entities
 {
-    public class EmployeeFilesHistory : HistoryEntity
+    public class EmployeeFileHistory : HistoryEntity
     {
         public required Guid EmployeeFileId { get; set; }
         public required Guid EmployeeId { get; set; }

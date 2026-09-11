@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EmployeeInformationSystem.Persistence.Configurations
 {
-    public class EmployeeFilesConfiguration : IEntityTypeConfiguration<EmployeeFiles>
+    public class EmployeeFilesConfiguration : IEntityTypeConfiguration<EmployeeFile>
     {
-        public void Configure(EntityTypeBuilder<EmployeeFiles> builder)
+        public void Configure(EntityTypeBuilder<EmployeeFile> builder)
         {
             builder.ToTable("EmployeeFiles");
 
