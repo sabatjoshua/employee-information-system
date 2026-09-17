@@ -22,3 +22,9 @@
 /src/EmployeeInformationSystem.API/appsettings.Development.json
 /src/EmployeeInformationSystem.API/appsettings.Development.json
 /src/EmployeeInformationSystem.API/Storage/EmployeeFiles
+/src/EmployeeInformationSystem.API/bin/Release/net8.0
+/src/EmployeeInformationSystem.Application/bin/Release/net8.0
+/src/EmployeeInformationSystem.Domain/bin/Release/net8.0
+/src/EmployeeInformationSystem.Infrastructure/bin/Release/net8.0
+/src/EmployeeInformationSystem.Persistence/bin/Release/net8.0
+/tests/EmployeeInformationSystem.Tests/bin/Release/net8.0
