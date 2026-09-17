@@ -1,10 +1,15 @@
 ﻿using EmployeeInformationSystem.Domain.Common;
-using System;
 
-namespace EmployeeInformationSystem.Domain.Entities
+public class Department : AuditableEntity
 {
-    public class Department : AuditableEntity
+    public Department()
     {
-        public required string Name { get; set; }
     }
+
+    public Department(Guid id)
+    {
+        Id = id;
+    }
+
+    public required string Name { get; set; }
 }

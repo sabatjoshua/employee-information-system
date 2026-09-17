@@ -1,0 +1,39 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: eis-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - eis_sql_data:/var/opt/mssql
+
+  api:
+    build:
+      context: .
+      dockerfile: src/EmployeeInformationSystem.API/Dockerfile
+    container_name: eis-api
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=EmployeeInformationSystem;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;"
+
+      Jwt__Key: "${JWT_KEY}"
+      Jwt__Issuer: "${JWT_ISSUER}"
+      Jwt__Audience: "${JWT_AUDIENCE}"
+
+      Seed__SuperPassword: "${SEED_SUPER_PASSWORD}"
+
+    ports:
+      - "8080:8080"
+    volumes:
+      - eis_employee_files:/app/Storage/EmployeeFiles
+
+volumes:
+  eis_sql_data:
+  eis_employee_files:

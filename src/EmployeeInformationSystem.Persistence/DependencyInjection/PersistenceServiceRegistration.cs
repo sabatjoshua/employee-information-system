@@ -5,6 +5,7 @@ using EmployeeInformationSystem.Infrastructure.Security;
 using EmployeeInformationSystem.Persistence.Contexts;
 using EmployeeInformationSystem.Persistence.Repositories;
 using EmployeeInformationSystem.Persistence.Security;
+using EmployeeInformationSystem.Persistence.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,8 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<ApplicationDbSeeder>();
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeHistoryRepository, EmployeeHistoryRepository>();
@@ -44,6 +47,7 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
             services.AddScoped<IUnitOfWork>(
                 provider => provider.GetRequiredService<ApplicationDbContext>());
             services.AddScoped<IPermissionService, PermissionService>();
+
 
             return services;
         }

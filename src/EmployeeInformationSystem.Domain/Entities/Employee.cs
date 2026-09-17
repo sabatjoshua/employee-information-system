@@ -5,6 +5,14 @@ namespace EmployeeInformationSystem.Domain.Entities
 {
     public class Employee :AuditableEntity
     {
+        public Employee()
+        {
+        }
+
+        public Employee(Guid id)
+        {
+            Id = id;
+        }
         public required string EmployeeNo { get; set; }
         public required string FirstName { get; set; }
         public string? MiddleName { get; set; }

@@ -1,10 +1,18 @@
-﻿using System;
-
-namespace EmployeeInformationSystem.Domain.Common
+﻿namespace EmployeeInformationSystem.Domain.Common
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; protected set; } = Guid.NewGuid();
+        protected BaseEntity()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        protected BaseEntity(Guid id)
+        {
+            Id = id;
+        }
+
+        public Guid Id { get; protected set; }
 
         public required string StatusCode { get; set; }
     }

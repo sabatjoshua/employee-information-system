@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using EmployeeInformationSystem.Persistence.Seeding;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +85,20 @@ builder.Services
     });
 
 var app = builder.Build();
+
+// Apply database migrations and seed default data
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+
+    var seeder = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbSeeder>();
+
+    await seeder.SeedAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
