@@ -29,3 +29,6 @@ jobs:
 
       - name: Test
         run: dotnet test EmployeeInformationSystem.sln --configuration Release --no-build
+
+      - name: Build Docker image
+        run: docker build -f src/EmployeeInformationSystem.API/Dockerfile -t employee-information-system-api .
