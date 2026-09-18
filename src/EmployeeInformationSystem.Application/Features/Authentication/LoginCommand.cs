@@ -53,7 +53,8 @@ namespace EmployeeInformationSystem.Application.Features.Authentication
                 return null;
             }
 
-            if (user.IsLocked)
+            //if (user.IsLocked)
+            if (user.IsLocked || user.StatusCode != StatusCodes.Active)
             {
                 return null;
             }
