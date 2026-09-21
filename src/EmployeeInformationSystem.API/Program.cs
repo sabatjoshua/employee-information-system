@@ -1,15 +1,16 @@
+using EmployeeInformationSystem.API.Middleware;
 using EmployeeInformationSystem.Application.DependencyInjection;
 using EmployeeInformationSystem.Infrastructure.DependencyInjection;
 using EmployeeInformationSystem.Persistence.Contexts;
 using EmployeeInformationSystem.Persistence.DependencyInjection;
+using EmployeeInformationSystem.Persistence.Seeding;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using EmployeeInformationSystem.Persistence.Seeding;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -99,6 +100,9 @@ using (var scope = app.Services.CreateScope())
 
     await seeder.SeedAsync();
 }
+
+// Global exception handling
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
