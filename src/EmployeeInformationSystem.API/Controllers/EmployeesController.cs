@@ -2,7 +2,6 @@
 using EmployeeInformationSystem.Application.Common.Security;
 using EmployeeInformationSystem.Application.Features.Employees;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
@@ -18,9 +17,14 @@ namespace EmployeeInformationSystem.API.Controllers
             _mediator = mediator;
         }
 
-        //[Authorize]
         [HasPermission(Permissions.EmployeeCreate)]
         [HttpPost]
+        [ProducesResponseType(
+            typeof(CreateEmployeeResponse),
+            StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Create(
             [FromBody] CreateEmployeeRequest request,
             CancellationToken cancellationToken)
@@ -48,9 +52,15 @@ namespace EmployeeInformationSystem.API.Controllers
                 result);
         }
 
-        //[Authorize]
         [HasPermission(Permissions.EmployeeUpdate)]
         [HttpPut("{id:guid}")]
+        [ProducesResponseType(
+            typeof(UpdateEmployeeResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(
             Guid id,
             [FromBody] UpdateEmployeeRequest request,
@@ -82,15 +92,20 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
         [HasPermission(Permissions.EmployeeDelete)]
         [HttpDelete("{id:guid}")]
+        [ProducesResponseType(
+            typeof(DeleteEmployeeResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(
             Guid id,
             CancellationToken cancellationToken)
         {
-            var command = new DeleteEmployeeCommand(
-                id);
+            var command = new DeleteEmployeeCommand(id);
 
             var result = await _mediator.Send(
                 command,
@@ -104,9 +119,15 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
         [HasPermission(Permissions.EmployeeView)]
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(
+            typeof(GetEmployeeByIdResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             Guid id,
             CancellationToken cancellationToken)
@@ -125,9 +146,14 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
         [HasPermission(Permissions.EmployeeView)]
         [HttpGet]
+        [ProducesResponseType(
+            typeof(GetEmployeesResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAll(
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10,
