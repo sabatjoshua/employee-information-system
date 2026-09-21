@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Middleware
@@ -22,6 +23,12 @@ namespace EmployeeInformationSystem.API.Middleware
             {
                 await _next(context);
             }
+            catch (ValidationException exception)
+            {
+                await HandleValidationExceptionAsync(
+                    context,
+                    exception);
+            }
             catch (Exception exception)
             {
                 _logger.LogError(
@@ -32,6 +39,35 @@ namespace EmployeeInformationSystem.API.Middleware
 
                 await HandleExceptionAsync(context);
             }
+        }
+
+        private static async Task HandleValidationExceptionAsync(
+            HttpContext context,
+            ValidationException exception)
+        {
+            const int statusCode = StatusCodes.Status400BadRequest;
+
+            var errors = exception.Errors
+                .GroupBy(error => error.PropertyName)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group
+                        .Select(error => error.ErrorMessage)
+                        .ToArray());
+
+            var problemDetails = new ValidationProblemDetails(errors)
+            {
+                Status = statusCode,
+                Title = "One or more validation errors occurred.",
+                Instance = context.Request.Path
+            };
+
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/problem+json";
+
+            var json = JsonSerializer.Serialize(problemDetails);
+
+            await context.Response.WriteAsync(json);
         }
 
         private static async Task HandleExceptionAsync(
