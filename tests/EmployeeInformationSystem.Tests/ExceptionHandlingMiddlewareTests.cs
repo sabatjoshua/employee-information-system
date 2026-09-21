@@ -23,6 +23,7 @@ public class ExceptionHandlingMiddlewareTests
 
         var context = new DefaultHttpContext();
 
+        context.Request.Method = HttpMethods.Get;
         context.Request.Path = "/api/test";
 
         context.Response.Body = new MemoryStream();
@@ -67,5 +68,16 @@ public class ExceptionHandlingMiddlewareTests
         Assert.DoesNotContain(
             "Test exception",
             responseBody);
+        logger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>(
+                    (state, _) =>
+                        state.ToString()!.Contains(
+                            "Unhandled exception for GET /api/test.")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
     }
 }

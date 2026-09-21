@@ -26,7 +26,9 @@ namespace EmployeeInformationSystem.API.Middleware
             {
                 _logger.LogError(
                     exception,
-                    "An unhandled exception occurred while processing the request.");
+                    "Unhandled exception for {Method} {Path}.",
+                    context.Request.Method,
+                    context.Request.Path);
 
                 await HandleExceptionAsync(context);
             }
