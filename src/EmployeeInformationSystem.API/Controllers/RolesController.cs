@@ -1,6 +1,7 @@
-﻿using EmployeeInformationSystem.Application.Features.Roles;
+﻿using EmployeeInformationSystem.API.Authorization;
+using EmployeeInformationSystem.Application.Common.Security;
+using EmployeeInformationSystem.Application.Features.Roles;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
@@ -16,8 +17,14 @@ namespace EmployeeInformationSystem.API.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
+        [HasPermission(Permissions.RoleCreate)]
         [HttpPost]
+        [ProducesResponseType(
+            typeof(CreateRoleResponse),
+            StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Create(
             [FromBody] CreateRoleRequest request,
             CancellationToken cancellationToken)
@@ -36,8 +43,15 @@ namespace EmployeeInformationSystem.API.Controllers
                 result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.RoleUpdate)]
         [HttpPut("{id:guid}")]
+        [ProducesResponseType(
+            typeof(UpdateRoleResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(
             Guid id,
             [FromBody] UpdateRoleRequest request,
@@ -60,8 +74,15 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.RoleDelete)]
         [HttpDelete("{id:guid}")]
+        [ProducesResponseType(
+            typeof(DeleteRoleResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(
             Guid id,
             CancellationToken cancellationToken)
@@ -80,8 +101,15 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.RoleView)]
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(
+            typeof(GetRoleByIdResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             Guid id,
             CancellationToken cancellationToken)

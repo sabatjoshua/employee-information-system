@@ -1,14 +1,14 @@
-﻿using EmployeeInformationSystem.API.Models.EmployeeFiles;
+﻿using EmployeeInformationSystem.API.Authorization;
+using EmployeeInformationSystem.API.Models.EmployeeFiles;
+using EmployeeInformationSystem.Application.Common.Security;
 using EmployeeInformationSystem.Application.Features.EmployeeFiles;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
 {
     [ApiController]
     [Route("api/employees/{employeeId:guid}/files")]
-    [Authorize]
     public sealed class EmployeeFilesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -18,15 +18,24 @@ namespace EmployeeInformationSystem.API.Controllers
             _mediator = mediator;
         }
 
+        [HasPermission(Permissions.EmployeeFileCreate)]
         [HttpPost]
         [Consumes("multipart/form-data")]
+        [ProducesResponseType(
+            typeof(UploadEmployeeFileResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Upload(
-        Guid employeeId,
-        [FromForm] UploadEmployeeFileRequest request,
-        CancellationToken cancellationToken)
+            Guid employeeId,
+            [FromForm] UploadEmployeeFileRequest request,
+            CancellationToken cancellationToken)
         {
             if (request.File is null || request.File.Length == 0)
+            {
                 return BadRequest("File is empty.");
+            }
 
             await using var stream = request.File.OpenReadStream();
 
@@ -44,7 +53,14 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
+        [HasPermission(Permissions.EmployeeFileView)]
         [HttpGet]
+        [ProducesResponseType(
+            typeof(GetEmployeeFilesResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetByEmployeeId(
             Guid employeeId,
             CancellationToken cancellationToken)
@@ -55,7 +71,14 @@ namespace EmployeeInformationSystem.API.Controllers
 
             return Ok(result);
         }
+
+        [HasPermission(Permissions.EmployeeFileView)]
         [HttpGet("{fileId:guid}/download")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Download(
             Guid employeeId,
             Guid fileId,
@@ -68,7 +91,9 @@ namespace EmployeeInformationSystem.API.Controllers
                 cancellationToken);
 
             if (result is null)
+            {
                 return NotFound();
+            }
 
             return File(
                 result.FileStream,

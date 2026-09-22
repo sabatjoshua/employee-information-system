@@ -1,6 +1,7 @@
-﻿using EmployeeInformationSystem.Application.Features.FunctionKeys;
+﻿using EmployeeInformationSystem.API.Authorization;
+using EmployeeInformationSystem.Application.Common.Security;
+using EmployeeInformationSystem.Application.Features.FunctionKeys;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
@@ -16,8 +17,14 @@ namespace EmployeeInformationSystem.API.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
+        [HasPermission(Permissions.FunctionCreate)]
         [HttpPost]
+        [ProducesResponseType(
+            typeof(CreateFunctionKeyResponse),
+            StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Create(
             [FromBody] CreateFunctionKeyRequest request,
             CancellationToken cancellationToken)
@@ -37,8 +44,15 @@ namespace EmployeeInformationSystem.API.Controllers
                 result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.FunctionUpdate)]
         [HttpPut("{id:guid}")]
+        [ProducesResponseType(
+            typeof(UpdateFunctionKeyResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(
             Guid id,
             [FromBody] UpdateFunctionKeyRequest request,
@@ -62,8 +76,15 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.FunctionDelete)]
         [HttpDelete("{id:guid}")]
+        [ProducesResponseType(
+            typeof(DeleteFunctionKeyResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(
             Guid id,
             CancellationToken cancellationToken)
@@ -82,8 +103,15 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.FunctionView)]
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(
+            typeof(GetFunctionKeyByIdResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             Guid id,
             CancellationToken cancellationToken)

@@ -1,6 +1,7 @@
-﻿using EmployeeInformationSystem.Application.Features.Departments;
+﻿using EmployeeInformationSystem.API.Authorization;
+using EmployeeInformationSystem.Application.Common.Security;
+using EmployeeInformationSystem.Application.Features.Departments;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeInformationSystem.API.Controllers
@@ -16,8 +17,14 @@ namespace EmployeeInformationSystem.API.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
+        [HasPermission(Permissions.DepartmentCreate)]
         [HttpPost]
+        [ProducesResponseType(
+            typeof(CreateDepartmentResponse),
+            StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Create(
             [FromBody] CreateDepartmentRequest request,
             CancellationToken cancellationToken)
@@ -35,8 +42,15 @@ namespace EmployeeInformationSystem.API.Controllers
                 result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.DepartmentUpdate)]
         [HttpPut("{id:guid}")]
+        [ProducesResponseType(
+            typeof(UpdateDepartmentResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(
             Guid id,
             [FromBody] UpdateDepartmentRequest request,
@@ -58,8 +72,15 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.DepartmentDelete)]
         [HttpDelete("{id:guid}")]
+        [ProducesResponseType(
+            typeof(DeleteDepartmentResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(
             Guid id,
             CancellationToken cancellationToken)
@@ -79,8 +100,15 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [HasPermission(Permissions.DepartmentView)]
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(
+            typeof(GetDepartmentByIdResponse),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(
             Guid id,
             CancellationToken cancellationToken)
@@ -99,8 +127,10 @@ namespace EmployeeInformationSystem.API.Controllers
             return Ok(result);
         }
     }
+
     public sealed record CreateDepartmentRequest(
         string Name);
+
     public sealed record UpdateDepartmentRequest(
-    string Name); 
+        string Name);
 }
