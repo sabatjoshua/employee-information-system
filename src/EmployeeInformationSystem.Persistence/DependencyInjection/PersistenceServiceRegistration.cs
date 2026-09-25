@@ -20,7 +20,11 @@ namespace EmployeeInformationSystem.Persistence.DependencyInjection
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection")));
+                    configuration.GetConnectionString("DefaultConnection"),
+                    sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure();
+                    }));
 
             services.AddScoped<ApplicationDbSeeder>();
 
