@@ -121,6 +121,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/cd-test", () => "CD TEST - deployed automatically!");
+
 // added by joshua 2026-08-11
 app.MapHealthChecks("/health", new HealthCheckOptions
 {
