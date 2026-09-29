@@ -2,28 +2,32 @@
 
 This project follows the principles of **Clean Architecture**.
 
-The main objective is to separate responsibilities, reduce coupling, improve maintainability, and allow the business logic to remain independent of frameworks and external technologies.
+The main objective is to separate responsibilities, reduce coupling, improve maintainability, and keep core business concepts independent from frameworks, databases, and external technologies.
 
 ---
 
 # Architecture Diagram
 
-```
+```text
                     API
                      │
                      ▼
                Application
-                     │
-                     ▼
-                  Domain
-                ▲         ▲
-                │         │
+                 │       │
+                 ▼       ▼
+              Domain   Abstractions
+                 ▲       ▲
+                 │       │
         Persistence   Infrastructure
 ```
 
-The dependency always points **towards the Domain**.
+The **Domain** layer remains independent of the other projects.
 
-The Domain layer never depends on any other project.
+The **Application** layer contains use cases and abstractions.
+
+**Persistence** and **Infrastructure** provide implementations for application and external concerns.
+
+The **API** layer is responsible for HTTP endpoints, authentication/authorization configuration, middleware, Swagger/OpenAPI, dependency injection, and application startup.
 
 ---
 
@@ -31,25 +35,27 @@ The Domain layer never depends on any other project.
 
 ## API
 
-The API project is responsible for exposing REST endpoints.
+The API project is responsible for exposing REST endpoints and handling HTTP concerns.
 
 Responsibilities:
 
 - Controllers
 - Middleware
-- Authentication
-- Authorization
-- Swagger
+- Authentication configuration
+- Authorization configuration
+- Swagger / OpenAPI
 - Dependency Injection
-- Request / Response
+- Health Checks
+- Request / Response handling
+- Program.cs / Application startup
 
-This project should NOT contain business logic.
+The API project should NOT contain business logic.
 
 ---
 
 ## Application
 
-The Application project contains application use cases.
+The Application project contains application use cases and business process orchestration.
 
 Responsibilities:
 
@@ -60,17 +66,18 @@ Responsibilities:
 - DTOs
 - Validators
 - Interfaces
-- Behaviors
+- MediatR Pipeline Behaviors
+- Application services
 
-This layer coordinates business processes.
+This layer coordinates application workflows.
 
-It knows what needs to happen but does not know how data is stored.
+It knows what needs to happen but does not know how data is stored or how external services are implemented.
 
 ---
 
 ## Domain
 
-The Domain project is the heart of the application.
+The Domain project contains the core business entities and domain concepts.
 
 Responsibilities:
 
@@ -83,79 +90,105 @@ Responsibilities:
 - Enums
 - Domain Exceptions
 
-The Domain project must never reference:
+The Domain project must remain independent of:
 
-- Entity Framework
+- Entity Framework Core
 - SQL Server
 - ASP.NET Core
 - HTTP
 - Controllers
+- External services
 
-It should contain only business concepts.
+It should contain core business concepts rather than infrastructure or framework-specific implementation details.
 
 ---
 
 ## Persistence
 
-The Persistence project handles all database operations.
+The Persistence project handles database access and persistence implementation.
 
 Responsibilities:
 
 - DbContext
 - Entity Configurations
 - Repository Implementations
-- Migrations
-- SQL Server
+- EF Core Migrations
+- Database Seeding
+- SQL Server Configuration
 
-Only this project communicates directly with the database.
+Persistence is responsible for Entity Framework Core and database-specific implementation details.
+
+Only the persistence layer communicates directly with the database.
 
 ---
 
 ## Infrastructure
 
-Infrastructure contains external services.
+Infrastructure contains implementations for external and cross-cutting services.
 
-Examples:
+Responsibilities / Examples:
 
-- JWT Authentication
+- JWT / Authentication Services
+- Password Hashing
 - File Storage
-- Email Service
-- Logging
-- Azure Blob Storage
-- Third-party APIs
+- External Services
+- Logging-related infrastructure
+- Third-party API integrations
 
-These are implementation details outside the business domain.
+Infrastructure implements application abstractions where appropriate.
+
+These are implementation details outside the core business domain.
 
 ---
 
 ## Tests
 
-Contains:
+The test project contains automated tests used to validate application behavior.
 
-- Unit Tests
-- Integration Tests
+Current test coverage includes:
 
-Every important business rule should eventually have corresponding tests.
+- Employee CRUD
+- User CRUD
+- Department CRUD
+- Position CRUD
+- Role CRUD
+- Function / Permission CRUD
+- RoleFunction CRUD
+- EmployeeRole CRUD
+- File Upload
+- File Retrieval
+- File Download
+- Validation
+- Authentication
+- Authorization
+- Exception Handling
+
+Current result:
+
+```text
+Total:     57
+Passed:    57
+Failed:     0
+Skipped:    0
+```
 
 ---
 
 # Domain Entity Hierarchy
 
-```
+```text
 BaseEntity
       │
-      ▼
-AuditableEntity
+      ├── AuditableEntity
       │
-      ▼
-HistoryEntity
+      └── HistoryEntity
 ```
 
 ### BaseEntity
 
-Contains properties shared by every entity.
+Contains properties shared by entities.
 
-```
+```text
 Id
 StatusCode
 ```
@@ -164,9 +197,9 @@ StatusCode
 
 ### AuditableEntity
 
-Adds audit information.
+Adds audit information for entities that require audit tracking.
 
-```
+```text
 CreatedBy
 CreatedAt
 UpdatedBy
@@ -177,15 +210,15 @@ UpdatedAt
 
 ### HistoryEntity
 
-Adds history information.
+Contains information describing a historical action.
 
-```
+```text
 ActionTypeCode
 ActionBy
 ActionAt
 ```
 
-Every History table inherits from this class.
+History entities use this information to record changes to business records.
 
 ---
 
@@ -193,30 +226,30 @@ Every History table inherits from this class.
 
 This project uses **Snapshot Audit History**.
 
-Instead of recording only changed columns, every change stores a complete copy of the record.
+Instead of recording only changed columns, a history record stores a complete snapshot of the relevant record together with action information.
 
 Advantages:
 
 - Simple reporting
 - Easier debugging
-- Easier rollback
 - Full historical snapshot
 - Easier SQL queries
+- Clear audit trail
 
 Example:
 
-```
+```text
 Employee
 
 John
 IT
 Developer
 
-↓
-
+        │
+        ▼
 Update Department
-
-↓
+        │
+        ▼
 
 EmployeeHistory
 
@@ -230,46 +263,95 @@ ActionType = Update
 
 # Lookup Strategy
 
-Instead of storing Lookup IDs, this project stores Lookup Codes.
+The application uses stable **Lookup Codes** for code-based values.
 
 Example:
 
-Instead of
+Instead of relying on a human-readable display value:
 
-```
-GenderId = GUID
+```text
+Gender = Male
 ```
 
-The system stores
+The system stores a stable code:
 
-```
+```text
 GenderCode = "M"
 ```
 
 Advantages:
 
+- Stable values
 - Easier SQL queries
 - Better readability
-- Enum support in C#
 - Simpler reporting
-
-The code never changes.
-
-Only the display name can be modified.
+- Display names can change without changing the stored code
 
 Example:
 
-```
+```text
 Code = M
 
-Display Name
-
+Display Name:
 Male
-Man
-Masculine
 ```
 
-The database stores only the stable code.
+The application treats the code as the stable business value while the display name can be changed independently.
+
+---
+
+# Security Architecture
+
+The application uses JWT Bearer Authentication combined with role and permission-based authorization.
+
+Security responsibilities include:
+
+- JWT Bearer Authentication
+- Claims-Based Authentication
+- Role-Based Authorization
+- Permission-Based Authorization
+- Dynamic Permission Policies
+- Custom Authorization Handling
+- Password Hashing
+- Standardized 401 / 403 responses
+
+Permission policies are evaluated dynamically based on the authenticated user's permissions.
+
+---
+
+# Application Request Flow
+
+A typical API request follows this flow:
+
+```text
+HTTP Request
+     │
+     ▼
+Controller
+     │
+     ▼
+MediatR
+     │
+     ▼
+ValidationBehavior
+     │
+     ▼
+Validator
+     │
+     ▼
+Handler
+     │
+     ▼
+Repository / Application Service
+     │
+     ▼
+Persistence
+     │
+     ▼
+SQL Server
+```
+
+Cross-cutting concerns such as authentication, authorization, validation, and exception handling are applied through the appropriate middleware, authorization handlers, and MediatR pipeline behaviors.
 
 ---
 
@@ -287,18 +369,57 @@ This project follows:
 
 ---
 
-# Long-term Goal
+# Current Status
 
-By version **1.0.0**, this project will include:
+Version **v1.0.0** has been completed as the production-ready portfolio milestone.
 
-- Complete Employee Management
+Completed capabilities include:
+
+- Employee Management
+- User Management
 - Authentication
 - Authorization
-- Role Management
-- Audit Trail
-- File Upload
+- Role & Permission Management
+- Audit / History Tracking
+- File Upload / Download
+- Automated Testing
 - Docker
-- GitHub Actions
-- Azure Deployment
+- Docker Compose
+- GitHub Actions CI/CD
+- GitHub Container Registry
+- Azure App Service
+- Azure SQL
+- Health Checks
+- Swagger / OpenAPI
 
-This project is intended to represent production-quality enterprise software development using modern .NET technologies.
+---
+
+# Phase 2 — Planned
+
+The next development phase is planned to extend the system with a modern frontend and additional capabilities.
+
+Planned items include:
+
+- React frontend
+- Bootstrap 5 UI
+- API integration
+- Frontend authentication
+- Improved user experience
+- Additional cloud / storage enhancements
+
+---
+
+# Long-Term Goal
+
+The project is intended to demonstrate production-oriented enterprise software development using modern .NET technologies.
+
+The goal is to continue improving the system while maintaining:
+
+- Clean architecture
+- Maintainable code
+- Secure APIs
+- Automated testing
+- CI/CD practices
+- Containerization
+- Cloud deployment
+- Clear separation of concerns
