@@ -16,18 +16,28 @@ namespace EmployeeInformationSystem.Application.Features.Employees
         DateTimeOffset BirthDate,
         string? Email,
         string? MobileNo,
-        DateTimeOffset HireDate,
+        DateTimeOffset HireDate, 
         Guid DepartmentId,
-        Guid PositionId);
+        string DepartmentName,
+        Guid PositionId,
+        string PositionName
+    );
 
     public sealed class GetEmployeeByIdHandler
     : IRequestHandler<GetEmployeeByIdQuery, GetEmployeeByIdResponse?>
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IPositionRepository _positionRepository;
 
-        public GetEmployeeByIdHandler(IEmployeeRepository employeeRepository)
+        public GetEmployeeByIdHandler(
+            IEmployeeRepository employeeRepository,
+            IDepartmentRepository departmentRepository,
+            IPositionRepository positionRepository)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
+            _positionRepository = positionRepository;
         }
 
         public async Task<GetEmployeeByIdResponse?> Handle(
@@ -43,6 +53,14 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 return null;
             }
 
+            var department = await _departmentRepository.GetByIdAsync(
+            employee.DepartmentId,
+            cancellationToken);
+
+            var position = await _positionRepository.GetByIdAsync(
+                employee.PositionId,
+                cancellationToken);
+
             return new GetEmployeeByIdResponse(
                 employee.Id,
                 employee.EmployeeNo,
@@ -55,7 +73,9 @@ namespace EmployeeInformationSystem.Application.Features.Employees
                 employee.MobileNo,
                 employee.HireDate,
                 employee.DepartmentId,
-                employee.PositionId);
+                department?.Name ?? "-",
+                employee.PositionId,
+                position?.Name ?? "-");
         }
     }
 }

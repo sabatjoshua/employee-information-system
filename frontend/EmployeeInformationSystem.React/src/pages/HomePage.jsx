@@ -11,15 +11,53 @@ function HomePage() {
   }
 
   return (
-    <div>
-      <h1>Employee Information System</h1>
+    <>
+      <nav className="navbar navbar-dark bg-dark">
+        <div className="container">
+          <span className="navbar-brand">
+            Employee Information System
+          </span>
 
-      <h2>Welcome, {userName}! 👋</h2>
+          <button
+            type="button"
+            className="btn btn-outline-light btn-sm"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
+      </nav>
 
-      <button onClick={handleLogout}>
-        Logout
-      </button>
-    </div>
+      <main className="container py-4">
+        <h2>Welcome, {userName}! 👋</h2>
+
+        <p className="text-muted">
+          Welcome to the Employee Information System.
+        </p>
+
+        <div className="row mt-4">
+          <div className="col-md-4">
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title">Employees</h5>
+
+                <p className="card-text text-muted">
+                  Manage employee information.
+                </p>
+
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => navigate('/employees')}
+                >
+                  View Employees
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
   )
 }
 
