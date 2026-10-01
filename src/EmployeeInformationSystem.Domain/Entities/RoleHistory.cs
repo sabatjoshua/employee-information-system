@@ -1,5 +1,4 @@
 ﻿using EmployeeInformationSystem.Domain.Common;
-using System;
 
 namespace EmployeeInformationSystem.Domain.Entities
 {

@@ -128,6 +128,32 @@ namespace EmployeeInformationSystem.API.Controllers
 
             return Ok(result);
         }
+        [HasPermission(Permissions.PositionView)]
+        [HttpGet]
+        [ProducesResponseType(
+            typeof(IReadOnlyList<GetPositionsByDepartmentResponse>),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetByDepartment(
+            [FromQuery] Guid departmentId,
+            CancellationToken cancellationToken)
+        {
+            if (departmentId == Guid.Empty)
+            {
+                return BadRequest("Department ID is required.");
+            }
+
+            var query = new GetPositionsByDepartmentQuery(
+                departmentId);
+
+            var result = await _mediator.Send(
+                query,
+                cancellationToken);
+
+            return Ok(result);
+        }
     }
 
     public sealed record CreatePositionRequest(

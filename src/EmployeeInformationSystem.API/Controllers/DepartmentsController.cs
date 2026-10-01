@@ -101,6 +101,25 @@ namespace EmployeeInformationSystem.API.Controllers
         }
 
         [HasPermission(Permissions.DepartmentView)]
+        [HttpGet]
+        [ProducesResponseType(
+            typeof(IReadOnlyList<GetDepartmentsResponse>),
+            StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetAll(
+            CancellationToken cancellationToken)
+        {
+            var query = new GetDepartmentsQuery();
+
+            var result = await _mediator.Send(
+                query,
+                cancellationToken);
+
+            return Ok(result);
+        }
+
+        [HasPermission(Permissions.DepartmentView)]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(
             typeof(GetDepartmentByIdResponse),

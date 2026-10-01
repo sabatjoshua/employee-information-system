@@ -38,6 +38,55 @@ public sealed class ApplicationDbSeeder
     private static readonly Guid EmployeeDeleteFunctionId =
         Guid.Parse("336d3cd5-6882-4513-b7e6-ac0b17b99111");
 
+    // Fixed IDs for DEPARTMENT permissions
+    private static readonly Guid DepartmentViewFunctionId =
+        Guid.Parse("c6f5b7d1-3d2a-4f9a-8c61-100000000001");
+
+    private static readonly Guid DepartmentCreateFunctionId =
+        Guid.Parse("c6f5b7d1-3d2a-4f9a-8c61-100000000002");
+
+    private static readonly Guid DepartmentUpdateFunctionId =
+        Guid.Parse("c6f5b7d1-3d2a-4f9a-8c61-100000000003");
+
+    private static readonly Guid DepartmentDeleteFunctionId =
+        Guid.Parse("c6f5b7d1-3d2a-4f9a-8c61-100000000004");
+
+    // Fixed IDs for POSITION permissions
+    private static readonly Guid PositionViewFunctionId =
+        Guid.Parse("d7a6c8e2-4e3b-5f0a-9d72-200000000001");
+
+    private static readonly Guid PositionCreateFunctionId =
+        Guid.Parse("d7a6c8e2-4e3b-5f0a-9d72-200000000002");
+
+    private static readonly Guid PositionUpdateFunctionId =
+        Guid.Parse("d7a6c8e2-4e3b-5f0a-9d72-200000000003");
+
+    private static readonly Guid PositionDeleteFunctionId =
+        Guid.Parse("d7a6c8e2-4e3b-5f0a-9d72-200000000004");
+    private static readonly Guid DepartmentViewRoleFunctionId =
+    Guid.Parse("e8b7d9f3-5f4c-601b-ae83-300000000001");
+
+    private static readonly Guid DepartmentCreateRoleFunctionId =
+        Guid.Parse("e8b7d9f3-5f4c-601b-ae83-300000000002");
+
+    private static readonly Guid DepartmentUpdateRoleFunctionId =
+        Guid.Parse("e8b7d9f3-5f4c-601b-ae83-300000000003");
+
+    private static readonly Guid DepartmentDeleteRoleFunctionId =
+        Guid.Parse("e8b7d9f3-5f4c-601b-ae83-300000000004");
+
+    private static readonly Guid PositionViewRoleFunctionId =
+        Guid.Parse("f9c8e0a4-604d-712c-bf94-400000000001");
+
+    private static readonly Guid PositionCreateRoleFunctionId =
+        Guid.Parse("f9c8e0a4-604d-712c-bf94-400000000002");
+
+    private static readonly Guid PositionUpdateRoleFunctionId =
+        Guid.Parse("f9c8e0a4-604d-712c-bf94-400000000003");
+
+    private static readonly Guid PositionDeleteRoleFunctionId =
+        Guid.Parse("f9c8e0a4-604d-712c-bf94-400000000004");
+
     // Fixed IDs for USER permissions
     private static readonly Guid UserViewFunctionId =
         Guid.Parse("ad40d5e6-b8c8-4d48-a001-000000000001");
@@ -567,7 +616,80 @@ public sealed class ApplicationDbSeeder
             StatusCode = "ACT",
             CreatedBy = SystemUserId,
             CreatedAt = DateTimeOffset.UtcNow
-        }
+        },
+    new(DepartmentViewFunctionId)
+    {
+        FunctionCode = "DEPARTMENT_VIEW",
+        DisplayName = "View Departments",
+        Remarks = "View department information",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(DepartmentCreateFunctionId)
+    {
+        FunctionCode = "DEPARTMENT_CREATE",
+        DisplayName = "Create Departments",
+        Remarks = "Create new department records",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(DepartmentUpdateFunctionId)
+    {
+        FunctionCode = "DEPARTMENT_UPDATE",
+        DisplayName = "Update Departments",
+        Remarks = "Update existing department records",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(DepartmentDeleteFunctionId)
+    {
+        FunctionCode = "DEPARTMENT_DELETE",
+        DisplayName = "Delete Departments",
+        Remarks = "Deactivate department records",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+
+    new(PositionViewFunctionId)
+    {
+        FunctionCode = "POSITION_VIEW",
+        DisplayName = "View Positions",
+        Remarks = "View position information",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(PositionCreateFunctionId)
+    {
+        FunctionCode = "POSITION_CREATE",
+        DisplayName = "Create Positions",
+        Remarks = "Create new position records",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(PositionUpdateFunctionId)
+    {
+        FunctionCode = "POSITION_UPDATE",
+        DisplayName = "Update Positions",
+        Remarks = "Update existing position records",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(PositionDeleteFunctionId)
+    {
+        FunctionCode = "POSITION_DELETE",
+        DisplayName = "Delete Positions",
+        Remarks = "Deactivate position records",
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    }
     };
 
         var existingIds = await _context.FunctionKeys
@@ -646,6 +768,71 @@ public sealed class ApplicationDbSeeder
             CreatedBy = SystemUserId,
             CreatedAt = DateTimeOffset.UtcNow
         },
+    new(DepartmentViewRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = DepartmentViewFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(DepartmentCreateRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = DepartmentCreateFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(DepartmentUpdateRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = DepartmentUpdateFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(DepartmentDeleteRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = DepartmentDeleteFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+
+    new(PositionViewRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = PositionViewFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(PositionCreateRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = PositionCreateFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(PositionUpdateRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = PositionUpdateFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
+    new(PositionDeleteRoleFunctionId)
+    {
+        RoleId = HrAdministratorRoleId,
+        FunctionKeyId = PositionDeleteFunctionId,
+        StatusCode = "ACT",
+        CreatedBy = SystemUserId,
+        CreatedAt = DateTimeOffset.UtcNow
+    },
 
         new(UserViewRoleFunctionId)
         {

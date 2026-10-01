@@ -2,11 +2,6 @@
 using EmployeeInformationSystem.Domain.Entities;
 using EmployeeInformationSystem.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeeInformationSystem.Persistence.Repositories
 {
@@ -29,6 +24,13 @@ namespace EmployeeInformationSystem.Persistence.Repositories
                     x => x.Id == departmentId,
                     cancellationToken);
         }
+        public async Task<IReadOnlyList<Department>> GetAllAsync(
+            CancellationToken cancellationToken = default)
+                {
+                    return await _context.Departments
+                        .OrderBy(x => x.Name)
+                        .ToListAsync(cancellationToken);
+                }
 
         public async Task AddAsync(
             Department department,
