@@ -507,7 +507,7 @@ return (
           </div>
         </div>
 
-        <div className="d-flex gap-2 mt-3">
+        <div className="mt-4 text-center">
           <button
             type="submit"
             className="btn btn-primary"
@@ -517,12 +517,13 @@ return (
 
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary ms-2"
             onClick={() => navigate('/employees')}
           >
             Cancel
           </button>
         </div>
+
       </form>
     )}
   </div>

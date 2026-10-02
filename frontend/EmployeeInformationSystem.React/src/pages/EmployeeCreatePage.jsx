@@ -467,13 +467,22 @@ function EmployeeCreatePage() {
             </div>
 
             <div className="mt-4 text-center">
-                <button
+            <button
                 type="submit"
                 className="btn btn-primary px-4"
-                >
+            >
                 Create Employee
-                </button>
+            </button>
+
+            <button
+                type="button"
+                className="btn btn-secondary ms-2"
+                onClick={() => navigate('/employees')}
+            >
+                Cancel
+            </button>
             </div>
+            
             </form>
         </div>
       </div>
