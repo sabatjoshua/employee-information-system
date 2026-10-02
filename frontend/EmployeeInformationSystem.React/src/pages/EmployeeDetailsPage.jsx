@@ -62,18 +62,80 @@ function EmployeeDetailsPage() {
     )
   }
 
+const handleDelete = async () => {
+  const confirmed = window.confirm(
+    'Are you sure you want to delete this employee?',
+  )
+
+  if (!confirmed) {
+    return
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/Employees/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      },
+    )
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        setError('Your session has expired. Please login again.')
+        return
+      }
+
+      if (response.status === 403) {
+        setError('You do not have permission to delete employees.')
+        return
+      }
+
+      if (response.status === 404) {
+        setError('Employee not found.')
+        return
+      }
+
+      setError('Unable to delete employee.')
+      return
+    }
+
+    navigate('/employees')
+  } catch {
+    setError('Unable to connect to the server.')
+  }
+}
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Employee Details</h2>
 
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={() => navigate('/employees')}
-        >
-          Back to Employees
-        </button>
+        <div className="d-flex gap-2 mt-4">
+          <button
+            type="button"
+            className="btn btn-warning"
+            onClick={() => navigate(`/employees/${id}/edit`)}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => handleDelete()}
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate('/employees')}
+          >
+            Back to Employees
+          </button>
+        </div>
       </div>
 
       {error && (
