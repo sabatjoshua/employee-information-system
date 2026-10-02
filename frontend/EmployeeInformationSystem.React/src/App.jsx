@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage'
 import EmployeesPage from './pages/EmployeesPage'
 import EmployeeDetailsPage from './pages/EmployeeDetailsPage'
 import EmployeeCreatePage from './pages/EmployeeCreatePage'
+import EmployeeEditPage from './pages/EmployeeEditPage'
 
 function App() {
   return (
@@ -34,6 +35,14 @@ function App() {
           element={
             <ProtectedRoute>
               <EmployeeDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employees/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EmployeeEditPage />
             </ProtectedRoute>
           }
         />

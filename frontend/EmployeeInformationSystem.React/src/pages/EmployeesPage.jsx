@@ -114,15 +114,27 @@ function EmployeesPage() {
 
                   <td>{new Date(employee.hireDate).toLocaleDateString()}</td>
 
-                    <td>
-                    <button
+                  <td>
+                    <div className="d-flex gap-2">
+                      <button
                         type="button"
                         className="btn btn-sm btn-primary"
                         onClick={() => navigate(`/employees/${employee.employeeId}`)}
-                    >
+                      >
                         View
-                    </button>
-                    </td>
+                      </button>
+
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-warning"
+                        onClick={() =>
+                          navigate(`/employees/${employee.employeeId}/edit`)
+                        }
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
