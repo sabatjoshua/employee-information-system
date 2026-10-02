@@ -49,6 +49,57 @@ function EmployeesPage() {
     loadEmployees()
   }, [])
 
+const handleDelete = async (employeeId) => {
+  const confirmed = window.confirm(
+    'Are you sure you want to delete this employee?',
+  )
+
+  if (!confirmed) {
+    return
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/Employees/${employeeId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authService.getToken()}`,
+        },
+      },
+    )
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        setError('Your session has expired. Please login again.')
+        return
+      }
+
+      if (response.status === 403) {
+        setError('You do not have permission to delete employees.')
+        return
+      }
+
+      if (response.status === 404) {
+        setError('Employee not found.')
+        return
+      }
+
+      setError('Unable to delete employee.')
+      return
+    }
+
+    setEmployees((previous) =>
+      previous.filter(
+        (employee) => employee.employeeId !== employeeId,
+      ),
+    )
+  } catch {
+    setError('Unable to connect to the server.')
+  }
+}
+
+
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -133,8 +184,17 @@ function EmployeesPage() {
                       >
                         Edit
                       </button>
+
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(employee.employeeId)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </td>
+
                 </tr>
               ))}
             </tbody>

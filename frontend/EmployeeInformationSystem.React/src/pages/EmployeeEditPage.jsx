@@ -518,7 +518,7 @@ return (
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={() => navigate(`/employees/${id}`)}
+            onClick={() => navigate('/employees')}
           >
             Cancel
           </button>
