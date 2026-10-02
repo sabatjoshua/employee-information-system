@@ -132,7 +132,7 @@ const handleDelete = async (employeeId) => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search employees..."
+            placeholder="Search employees by employee no, name, or email..."
             value={search}
             onChange={(event) => {
               setSearch(event.target.value)
@@ -143,7 +143,14 @@ const handleDelete = async (employeeId) => {
       </div>
 
       {loading && (
-        <p>Loading employees...</p>
+        <div className="d-flex align-items-center gap-2">
+          <div
+            className="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></div>
+          <span>Loading employees...</span>
+        </div>
       )}
 
       {error && (
