@@ -51,11 +51,22 @@ function EmployeesPage() {
 
   return (
     <div className="container py-4">
-      <h2>Employees</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 className="mb-1">Employees</h2>
+          <p className="text-muted mb-0">
+            Manage employee information.
+          </p>
+        </div>
 
-      <p className="text-muted">
-        Manage employee information.
-      </p>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => navigate('/employees/create')}
+        >
+          Add Employee
+        </button>
+      </div>
 
       {loading && (
         <p>Loading employees...</p>

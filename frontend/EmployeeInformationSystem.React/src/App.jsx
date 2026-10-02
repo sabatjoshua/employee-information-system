@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import EmployeesPage from './pages/EmployeesPage'
 import EmployeeDetailsPage from './pages/EmployeeDetailsPage'
+import EmployeeCreatePage from './pages/EmployeeCreatePage'
 
 function App() {
   return (
@@ -36,7 +37,14 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/employees/create"
+          element={
+            <ProtectedRoute>
+              <EmployeeCreatePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
