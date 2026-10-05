@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import API_BASE_URL from '../services/api'
 
 function EmployeeCreatePage() {
   const navigate = useNavigate()
@@ -28,7 +29,7 @@ function EmployeeCreatePage() {
         const token = localStorage.getItem('token')
 
         const response = await fetch(
-          'http://localhost:8080/api/Departments',
+          `${API_BASE_URL}/api/Departments`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -62,7 +63,7 @@ function EmployeeCreatePage() {
         const token = localStorage.getItem('token')
 
         const response = await fetch(
-          `http://localhost:8080/api/Positions?departmentId=${selectedDepartmentId}`,
+          `${API_BASE_URL}/api/Positions?departmentId=${selectedDepartmentId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -113,7 +114,7 @@ function EmployeeCreatePage() {
         const token = localStorage.getItem('token')
 
         const response = await fetch(
-        'http://localhost:8080/api/Employees',
+        `${API_BASE_URL}/api/Employees`,
         {
             method: 'POST',
             headers: {

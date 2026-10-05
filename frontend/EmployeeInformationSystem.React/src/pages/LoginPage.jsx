@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import authService from '../services/authService'
+import API_BASE_URL from '../services/api'
 
 function LoginPage() {
   const [username, setUsername] = useState('')
@@ -38,7 +39,7 @@ return (
 
            try {
             const response = await fetch(
-                'http://localhost:8080/api/Authentication/login',
+                `${API_BASE_URL}/api/Authentication/login`,
                 {
                 method: 'POST',
                 headers: {

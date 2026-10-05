@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import authService from '../services/authService'
+import API_BASE_URL from '../services/api'
 
 function EmployeesPage() {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ function EmployeesPage() {
     const loadEmployees = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/Employees?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${encodeURIComponent(search)}`,
+          `${API_BASE_URL}/api/Employees?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${encodeURIComponent(search)}`,
           {
             headers: {
               Authorization: `Bearer ${authService.getToken()}`,
@@ -68,7 +69,7 @@ const handleDelete = async (employeeId) => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/Employees/${employeeId}`,
+      `${API_BASE_URL}/api/Employees/${employeeId}`,
       {
         method: 'DELETE',
         headers: {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import authService from '../services/authService'
+import API_BASE_URL from '../services/api'
+
 
 function EmployeeEditPage() {
     const navigate = useNavigate()
@@ -40,7 +42,7 @@ function EmployeeEditPage() {
     const loadEmployee = async () => {
         try {
         const response = await fetch(
-            `http://localhost:8080/api/Employees/${id}`,
+            `${API_BASE_URL}/api/Employees/${id}`,
             {
             headers: {
                 Authorization: `Bearer ${authService.getToken()}`,
@@ -103,7 +105,7 @@ useEffect(() => {
   const loadDepartments = async () => {
     try {
       const response = await fetch(
-        'http://localhost:8080/api/Departments',
+        `${API_BASE_URL}/api/Departments`,
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,
@@ -135,7 +137,7 @@ useEffect(() => {
   const loadPositions = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/Positions?departmentId=${selectedDepartmentId}`,
+        `${API_BASE_URL}/api/Positions?departmentId=${selectedDepartmentId}`,
         {
           headers: {
             Authorization: `Bearer ${authService.getToken()}`,
@@ -175,7 +177,7 @@ const handleSubmit = async (event) => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/Employees/${id}`,
+      `${API_BASE_URL}/api/Employees/${id}`,
       {
         method: 'PUT',
         headers: {

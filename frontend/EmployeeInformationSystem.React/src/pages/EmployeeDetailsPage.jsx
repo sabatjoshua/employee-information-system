@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import authService from '../services/authService'
+import API_BASE_URL from '../services/api'
 
 function EmployeeDetailsPage() {
   const { id } = useParams()
@@ -14,7 +15,7 @@ function EmployeeDetailsPage() {
     const loadEmployee = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/Employees/${id}`,
+          `${API_BASE_URL}/api/Employees/${id}`,
           {
             headers: {
               Authorization: `Bearer ${authService.getToken()}`,
@@ -73,7 +74,7 @@ const handleDelete = async () => {
 
   try {
     const response = await fetch(
-      `http://localhost:8080/api/Employees/${id}`,
+      `${API_BASE_URL}/api/Employees/${id}`,
       {
         method: 'DELETE',
         headers: {
