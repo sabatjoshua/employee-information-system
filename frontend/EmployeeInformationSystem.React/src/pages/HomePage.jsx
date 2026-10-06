@@ -56,6 +56,50 @@ function HomePage() {
             </div>
           </div>
         </div>
+
+        <div className="row mt-4">
+          <div className="col-md-4">
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title">Departments</h5>
+
+                <p className="card-text text-muted">
+                  Manage department information.
+                </p>
+
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => navigate('/departments')}
+                >
+                  View Departments
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row mt-4">
+          <div className="col-md-4">
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title">Positions</h5>
+
+                <p className="card-text text-muted">
+                  Manage position information.
+                </p>
+
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => navigate('/positions')}
+                >
+                  View Positions
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </>
   )
